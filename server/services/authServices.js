@@ -7,7 +7,15 @@ import { userWithoutPasswordFunction } from "../helpers/userWithoutPassword.js";
 class AuthServices {
   constructor() {}
 
-  async create({ firstName, lastName, email, password }) {
+  async create({
+    firstName,
+    lastName,
+    email,
+    password,
+    picture,
+    location,
+    ocupation,
+  }) {
     try {
       const salt = await bcrypt.genSalt();
       const passwordHash = await bcrypt.hash(password, salt);
@@ -21,6 +29,9 @@ class AuthServices {
         lastName,
         email,
         password: passwordHash,
+        picture,
+        location,
+        ocupation,
       });
 
       const savedUser = await newUser.save();

@@ -7,13 +7,24 @@ class AuthController {
 
   async register(req, res) {
     try {
-      const { firstName, lastName, email, password } = req.body;
+      const {
+        firstName,
+        lastName,
+        email,
+        password,
+        picture,
+        location,
+        ocupation,
+      } = req.body;
 
       const createdUserWithToken = await services.create({
         firstName,
         lastName,
         email,
         password,
+        picture,
+        location,
+        ocupation,
       });
 
       res.cookie("token", createdUserWithToken.data.token, {
