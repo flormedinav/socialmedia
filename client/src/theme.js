@@ -40,6 +40,18 @@ export const colorTokens = {
   //   800: "#27095B",
   //   900: "#0D014B",
   // },
+  primary: {
+    50: "#FFF7E6",
+    100: "#FFE0B2",
+    200: "#FFCC80",
+    300: "#FFB74D",
+    400: "#FFA726",
+    500: "#FF9800",
+    600: "#F57C00",
+    700: "#EF6C00",
+    800: "#E65100",
+    900: "#FF3D00",
+  },
 };
 
 export const themeSettings = (mode) => {
@@ -85,6 +97,9 @@ export const themeSettings = (mode) => {
               alt: colorTokens.grey[0],
             },
           }),
+    },
+    error: {
+      main: "#d32f2f",
     },
     typography: {
       fontFamily: ["Rubik", "sans-serif"].join(","),
