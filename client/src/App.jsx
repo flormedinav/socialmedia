@@ -6,15 +6,19 @@ import { createTheme } from "@mui/material/styles";
 
 import { themeSettings } from "./theme";
 
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import ProfilePage from "./pages/ProfilePage";
-import NotFoundPage from "./pages/NotFoundPage";
+import {
+  HomePage,
+  LoginPage,
+  ProfilePage,
+  NotFoundPage,
+  RegisterPage,
+} from "./pages";
 
 function App() {
   const { mode } = useSelector((state) => state.general);
   const theme = useMemo(() => createTheme(themeSettings(mode), [mode]));
-
+  const isAuth = Boolean(useSelector((state) => state.auth.token));
+  console.log({ isAuth });
   return (
     <div className="app">
       <BrowserRouter>
@@ -22,8 +26,15 @@ function App() {
           <CssBaseline />
           <Routes>
             <Route path="/" element={<LoginPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/profile/:useId" element={<ProfilePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/home"
+              element={isAuth ? <HomePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/profile/:useId"
+              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </ThemeProvider>
