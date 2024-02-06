@@ -16,13 +16,12 @@ import { Search, DarkMode, LightMode, Menu, Close } from "@mui/icons-material";
 import { setMode } from "../../state/slices/generalSlice";
 import { setLogout } from "../../state/slices/authSlice";
 
-import FlexBetween from "../FlexBetween";
+import { FlexBetween, Logo } from "../";
 import {
   MEDIA_QUERY_MIN_WIDTH,
   NAVBAR_CONSTANTS,
   TYPE_THEMES,
 } from "../../constants/global";
-import Logo from "../Logo";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ const Navbar = () => {
 
   const { user } = useSelector((state) => state.user);
 
-  const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH);
+  const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
   const { palette } = useTheme();
 
