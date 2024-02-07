@@ -51,6 +51,19 @@ class UsersServices {
     }
   }
 
+  async getAllUsers() {
+    try {
+      const users = await User.find().select(NOT_SELECT_PASSWORD);
+
+      return {
+        response: USER_SUCCESS_MESSAGES.ALL_USERS,
+        data: users,
+      };
+    } catch (error) {
+      throw new Error(`${error.message || error}`);
+    }
+  }
+
   async removeFriend({ id, friendId }) {
     try {
       const user = await User.findById(id);
@@ -85,9 +98,9 @@ class UsersServices {
     }
   }
 
-  async addRemoveFriend({ id, friendId }) {
+  async addRemoveFriend({ userId, friendId }) {
     try {
-      const user = await User.findById(id);
+      const user = await User.findById(userId);
 
       if (!user) throw new Error(USER_ERROR_MESSAGES.USER_NOT_FOUND);
 
@@ -97,10 +110,12 @@ class UsersServices {
 
       if (user.friends.includes(friendId)) {
         user.friends = user.friends.filter((id) => id.toString() !== friendId);
-        friend.friends = friend.friends.filter((id) => id.toString() !== id);
+        friend.friends = friend.friends.filter(
+          (id) => id.toString() !== userId
+        );
       } else {
         user.friends.push(friendId);
-        friend.friends.push(id);
+        friend.friends.push(userId);
       }
 
       await user.save();
@@ -112,7 +127,6 @@ class UsersServices {
 
       const formattedFriends = formattedFriendsFunction(friends);
 
-      console.log({ id, friendId, formattedFriends, friends });
       return {
         message: USER_SUCCESS_MESSAGES.FRIEND_UPDATED,
         data: formattedFriends,
@@ -209,7 +223,7 @@ class UsersServices {
         receiver: id,
         status: STATUS_FRIEND_REQUEST.PENDING,
       });
-      console.log(existingReceivedRequest, existingSentRequest);
+      existingReceivedRequest, existingSentRequest;
       if (existingReceivedRequest || existingSentRequest) {
         throw new Error(USER_ERROR_MESSAGES.FRIEND_REQUEST_EXISTS);
       }
@@ -330,6 +344,10 @@ class UsersServices {
 
   async searchUsers({ query, userId }) {
     try {
+      if (!query) {
+        return { message: "Empty query", data: [] };
+      }
+
       const users = await User.find({
         $or: [
           { firstName: { $regex: query, $options: "i" } },
