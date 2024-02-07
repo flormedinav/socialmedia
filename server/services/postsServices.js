@@ -90,7 +90,7 @@ class PostsServices {
     }
   }
 
-  async createPost({ userId, description, picturePath }) {
+  async createPost({ userId, description, picture }) {
     try {
       const user = await User.findById(userId).select(QUERY_SELECT_INFO_USER);
 
@@ -99,7 +99,7 @@ class PostsServices {
       const newPost = new Post({
         user: user._id,
         description,
-        picturePath,
+        picture,
         likes: {},
         comments: [],
       });
@@ -110,7 +110,7 @@ class PostsServices {
 
       return {
         message: POST_SUCCESS_MESSAGES.POST_CREATED,
-        data: data.posts,
+        data,
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);
@@ -183,9 +183,19 @@ class PostsServices {
       post.comments.push(newComment);
       await post.save();
 
+      const postUpdated = await Post.findById(postId)
+        .populate({
+          path: "user",
+          select: QUERY_SELECT_INFO_USER,
+        })
+        .populate({
+          path: "comments.user",
+          select: QUERY_SELECT_INFO_USER,
+        });
+
       return {
         message: POST_SUCCESS_MESSAGES.COMMENT_ADDED,
-        data: newComment,
+        data: postUpdated,
       };
     } catch (error) {
       throw new Error(error.message || error);

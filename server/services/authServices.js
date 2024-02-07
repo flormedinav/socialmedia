@@ -14,7 +14,7 @@ class AuthServices {
     password,
     picture,
     location,
-    ocupation,
+    occupation,
   }) {
     try {
       const salt = await bcrypt.genSalt();
@@ -31,7 +31,7 @@ class AuthServices {
         password: passwordHash,
         picture,
         location,
-        ocupation,
+        occupation,
       });
 
       const savedUser = await newUser.save();
