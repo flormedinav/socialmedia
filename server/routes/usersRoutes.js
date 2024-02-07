@@ -12,6 +12,10 @@ router.get("/:userId", authorizationMiddleware, controllers.getUser);
 //Buscar usuarios
 router.get("/:userId/search", authorizationMiddleware, controllers.searchUsers);
 
+//Buscar usuarios
+router.get("/:userId/all-users", authorizationMiddleware, controllers.getAllUsers);
+
+
 //Obtener amigos de un usuario
 router.get(
   "/:userId/friends",
