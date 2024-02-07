@@ -19,6 +19,7 @@ export const USER_ERROR_MESSAGES = {
   ALREADY_FRIEND: "Este usuario ya es tu amigo.",
   FRIEND_REQUEST_NOT_FOUND: "No se pudo encontrar la solicitud de amistad.",
   FRIEND_NOT_REQUEST_RECEIVED: "Sin solicitudes.",
+  ALL_USERS: "Error al obtener todos los usuarios.",
 };
 
 export const USER_SUCCESS_MESSAGES = {
@@ -37,4 +38,5 @@ export const USER_SUCCESS_MESSAGES = {
   PRIVACY_STATUS_UPDATED_PRIVATE: "Estado de privacidad actualizado a privado.",
   PRIVACY_STATUS_UPDATED_PUBLIC: "Estado de privacidad actualizado a público.",
   USER_SEARCH_SUCCESSFUL: "Búsqueda de usuarios realizada correctamente.",
+  ALL_USERS: "Todos los usuarios.",
 };

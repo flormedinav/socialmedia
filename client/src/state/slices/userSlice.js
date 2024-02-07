@@ -11,9 +11,12 @@ export const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload.user;
     },
+    setClearUser: (state) => {
+      state.user = null;
+    },
     setFriends: (state, action) => {
       if (state.user) {
-        state.user.friends = action.payload.friends;
+        state.user.friends = action.payload;
       } else {
         console.error("User friends non-existent");
       }
@@ -21,6 +24,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setFriends } = userSlice.actions;
+export const { setUser, setFriends, setClearUser } = userSlice.actions;
 
 export default userSlice.reducer;

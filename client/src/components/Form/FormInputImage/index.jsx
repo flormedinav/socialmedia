@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  IconButton,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -17,7 +16,7 @@ const FormInputImage = ({ errors, touched, setFieldValue }) => {
   const theme = useTheme();
   const [previewSource, setPreviewSource] = useState(null);
   const [uploadStatus, setUploadStatus] = useState(null);
-  console.log({ errors, touched });
+
   const handleImageUpload = async (event) => {
     try {
       const file = event.target.files[0];
@@ -33,7 +32,7 @@ const FormInputImage = ({ errors, touched, setFieldValue }) => {
         "https://api.cloudinary.com/v1_1/dwyt8jlrl/image/upload",
         formData
       );
-      console.log({ response });
+
       // Update the value of `values.image`
       setFieldValue("picture", response.data.secure_url);
       setUploadStatus("success");
@@ -154,11 +153,6 @@ const FormInputImage = ({ errors, touched, setFieldValue }) => {
 };
 
 const ImgStyled = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`;
-const ImgDefaultStyled = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;

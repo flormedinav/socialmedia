@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   IconButton,
@@ -15,16 +16,14 @@ import { Search, DarkMode, LightMode, Menu, Close } from "@mui/icons-material";
 
 import { setMode } from "../../state/slices/generalSlice";
 import { setLogout } from "../../state/slices/authSlice";
-
 import { FlexBetween, Logo } from "../";
-import {
-  MEDIA_QUERY_MIN_WIDTH,
-  NAVBAR_CONSTANTS,
-  TYPE_THEMES,
-} from "../../constants/global";
+import { MEDIA_QUERY_MIN_WIDTH, TYPE_THEMES } from "../../constants/global";
+import { NAVBAR_CONSTANTS } from "../../constants/navbarConstants";
+import { setClearUser } from "../../state/slices/userSlice";
 
-const Navbar = () => {
+const Navbar = ({ isNavigate }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
 
@@ -43,23 +42,16 @@ const Navbar = () => {
     user ? user?.lastName : "Smite"
   }`;
 
+  const handleClickLogout = () => {
+    dispatch(setLogout());
+    dispatch(setClearUser());
+    navigate("/");
+  };
+
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
-        <Logo isNavigate />
-        {isNonMobileScreens && (
-          <FlexBetween
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder={NAVBAR_CONSTANTS.PLACEHOLDER_SEARCH} />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        )}
+        <Logo isNavigate={isNavigate} />
       </FlexBetween>
 
       {/* DESKTOP NAV */}
@@ -94,7 +86,7 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>
+              <MenuItem onClick={handleClickLogout}>
                 {NAVBAR_CONSTANTS.LOG_OUT}
               </MenuItem>
             </Select>
@@ -148,18 +140,6 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-
-            <FlexBetween
-              width="100%"
-              backgroundColor={neutralLight}
-              borderRadius="9px"
-              padding="0.1rem 1rem"
-            >
-              <InputBase placeholder={NAVBAR_CONSTANTS.PLACEHOLDER_SEARCH} />
-              <IconButton>
-                <Search />
-              </IconButton>
-            </FlexBetween>
 
             <FormControl
               variant="standard"

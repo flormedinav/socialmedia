@@ -14,7 +14,7 @@ class AuthController {
         password,
         picture,
         location,
-        ocupation,
+        occupation,
       } = req.body;
 
       const createdUserWithToken = await services.create({
@@ -24,7 +24,7 @@ class AuthController {
         password,
         picture,
         location,
-        ocupation,
+        occupation,
       });
 
       res.cookie("token", createdUserWithToken.data.token, {

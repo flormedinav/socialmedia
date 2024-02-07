@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { FORM_CONSTANTS } from "../constants/global";
+import { FORM_CONSTANTS } from "../constants/formConstants";
 
 const loginSchema = yup.object({
   email: yup

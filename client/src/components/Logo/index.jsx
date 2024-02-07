@@ -23,16 +23,16 @@ const Logo = ({ isNavigate }) => {
   const isCursorPointer = isNavigate ? "pointer" : "unset";
 
   const handleClick = () => {
-    if (!isNavigate) return;
-
-    return () => navigate("/home");
+    if (isNavigate) {
+      navigate("/home");
+    }
   };
 
   return (
     <Typography
       fontWeight="bold"
       fontSize="clamp(1rem, 2rem, 2.25rem)"
-      color="primary"
+      color={palette.primary.main}
       onClick={handleClick}
       sx={getStylesLogo()}
     >

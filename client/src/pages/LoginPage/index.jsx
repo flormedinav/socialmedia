@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, TextField, useTheme } from "@mui/material";
 import { useDispatch } from "react-redux";
 
-import { FORM_BUTTON_CONSTANTS, FORM_CONSTANTS } from "../../constants/global";
+import {
+  FORM_BUTTON_CONSTANTS,
+  FORM_CONSTANTS,
+} from "../../constants/formConstants";
 import { FormBase, FormButton } from "../../components";
 import { Formik } from "formik";
 import { loginSchema } from "../../schema";
-import { authLogin } from "../../services";
+import { authLogin } from "../../services/authServices";
 import { setLogin } from "../../state/slices/authSlice";
 import { setUser } from "../../state/slices/userSlice";
 
@@ -18,11 +22,13 @@ const initialValuesLogin = {
 const IMAGE_WELCOME = 'url("assets/login/login-op12.jpg")';
 
 const LoginPage = () => {
-  const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (values) => {
+    setIsLoading(true);
+
     const response = await authLogin(values);
 
     if (response) {
@@ -31,6 +37,7 @@ const LoginPage = () => {
 
       navigate("/home");
     }
+    setIsLoading(false);
   };
 
   return (
@@ -81,6 +88,7 @@ const LoginPage = () => {
               question={FORM_BUTTON_CONSTANTS.LOGIN.QUESTION}
               textRedirect={FORM_BUTTON_CONSTANTS.LOGIN.TEXT_REDIRECT}
               pathRedirect={FORM_BUTTON_CONSTANTS.LOGIN.PATH_REDIRECT}
+              disabled={isLoading}
             />
           </form>
         )}

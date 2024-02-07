@@ -1,5 +1,5 @@
 export const QUERY_SELECT_INFO_USER =
-  "firstName lastName picturePath occupation location";
+  "firstName lastName picture occupation location";
 
 export const NOT_SELECT_PASSWORD = "-password";
 

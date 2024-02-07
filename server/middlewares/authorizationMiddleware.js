@@ -13,17 +13,16 @@ const authorizationMiddleware = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      console.log({ err });
       if (err.name === "TokenExpiredError") {
         return res.status(401).json({ message: "Token expired" });
       } else {
         return res.status(403).json({ message: "Invalid token" });
       }
     }
-    
-    if (req.params.userId !== user.id) {
-      return res.status(403).json({ message: "Unauthorized access" });
-    }
+
+    // if (req.params.userId !== user.id) {
+    //   return res.status(403).json({ message: "Unauthorized access" });
+    // }
 
     req.user = user;
     next();

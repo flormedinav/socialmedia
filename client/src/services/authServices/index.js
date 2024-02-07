@@ -12,7 +12,10 @@ export const authLogin = async (formData) => {
   } catch (error) {
     console.error("Error in getAuthLogin: ", error);
 
-    callToast(TYPE_TOAST.ERROR, error.response.data.error);
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.AUHT.ERROR.LOGIN
+    );
   }
 };
 
@@ -21,10 +24,13 @@ export const authRegister = async (formData) => {
     const response = await instance.post("/auth/register", formData);
 
     sessionStorage.setItem("token", response.data.token);
-    console.log({ response });
+
     return response.data;
   } catch (error) {
     console.error("Error in getAuthRegister: ", error);
-    callToast(TYPE_TOAST.ERROR, error.response.data.error);
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.AUHT.ERROR.REGISTER
+    );
   }
 };

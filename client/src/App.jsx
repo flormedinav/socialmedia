@@ -18,7 +18,7 @@ function App() {
   const { mode } = useSelector((state) => state.general);
   const theme = useMemo(() => createTheme(themeSettings(mode), [mode]));
   const isAuth = Boolean(useSelector((state) => state.auth.token));
-  console.log({ isAuth });
+
   return (
     <div className="app">
       <BrowserRouter>
@@ -32,7 +32,7 @@ function App() {
               element={isAuth ? <HomePage /> : <Navigate to="/" />}
             />
             <Route
-              path="/profile/:useId"
+              path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
             <Route path="*" element={<NotFoundPage />} />

@@ -42,12 +42,12 @@ class PostsController {
   async createPost(req, res) {
     try {
       const { userId } = req.params;
-      const { description, picturePath } = req.body;
+      const { description, picture } = req.body;
 
       const response = await services.createPost({
         userId,
         description,
-        picturePath,
+        picture,
       });
 
       res.status(201).json(response);

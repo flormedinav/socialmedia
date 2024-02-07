@@ -1,17 +1,26 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
 import { Box, useTheme, useMediaQuery, TextField } from "@mui/material";
 
+import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import {
   FORM_BUTTON_CONSTANTS,
   FORM_CONSTANTS,
-  MEDIA_QUERY_MIN_WIDTH,
-} from "../../constants/global";
+} from "../../constants/formConstants";
 import { registerSchema } from "../../schema";
-import { FormBase, FormButton, FormInputImage } from "../../components";
-import { FIELD_CONFIG_REGISTER } from "../../constants/fieldConfigRegister";
-import { authRegister } from "../../services";
+import {
+  FormBase,
+  FormButton,
+  FormInputImage,
+  UploadImage,
+} from "../../components";
+import { FIELD_CONFIG_REGISTER } from "../../constants/formConstants";
+import { authRegister } from "../../services/authServices";
+import { setLogin } from "../../state/slices/authSlice";
+import { setUser } from "../../state/slices/userSlice";
+import { createUrlCloudinary } from "../../services/cloudinaryServices";
 
 const initialValuesRegister = {
   firstName: "",
@@ -19,19 +28,28 @@ const initialValuesRegister = {
   email: "",
   password: "",
   location: "",
-  ocupation: "",
+  occupation: "",
   picture: "",
 };
 
 const IMAGE_WELCOME = 'url("assets/login/login-op13.jpg")';
 
 const RegisterPage = () => {
-  const { palette } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleFormSubmit = async (values, onSubmitProps) => {
+  const handleFormSubmit = async (values) => {
+    setIsLoading(true);
+
+    if (image) {
+      const responsePicture = await createUrlCloudinary(image);
+      values.picture = responsePicture.data.secure_url;
+    }
+
     const response = await authRegister(values);
 
     if (response) {
@@ -40,6 +58,8 @@ const RegisterPage = () => {
 
       navigate("/home");
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -63,8 +83,9 @@ const RegisterPage = () => {
         }) => (
           <form onSubmit={handleSubmit}>
             <Box display="flex" flexDirection="column" gap="1.5rem">
-              {FIELD_CONFIG_REGISTER.map((group) => (
+              {FIELD_CONFIG_REGISTER.map((group, index) => (
                 <Box
+                  key={index}
                   display="flex"
                   flexDirection={isNonMobileScreens ? "row" : "column"}
                   justifyContent="space-between"
@@ -72,6 +93,7 @@ const RegisterPage = () => {
                 >
                   {group.map(({ name, label, type }) => (
                     <TextField
+                      key={name}
                       label={label}
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -88,10 +110,15 @@ const RegisterPage = () => {
               ))}
             </Box>
 
-            <FormInputImage
+            <UploadImage
+              setFieldValue={(formImage) => {
+                setImage(formImage);
+                setFieldValue("picture", formImage);
+              }}
+              fileName={fileName}
+              setFileName={setFileName}
               errors={errors}
               touched={touched}
-              setFieldValue={setFieldValue}
             />
 
             <FormButton
@@ -99,6 +126,7 @@ const RegisterPage = () => {
               question={FORM_BUTTON_CONSTANTS.REGISTER.QUESTION}
               textRedirect={FORM_BUTTON_CONSTANTS.REGISTER.TEXT_REDIRECT}
               pathRedirect={FORM_BUTTON_CONSTANTS.REGISTER.PATH_REDIRECT}
+              disabled={isLoading}
             />
           </form>
         )}

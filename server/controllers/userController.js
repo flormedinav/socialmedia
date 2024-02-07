@@ -29,11 +29,23 @@ class UsersController {
     }
   }
 
+  async getAllUsers(req, res) {
+    try {
+      const { userId } = req.params;
+
+      const response = await services.getAllUsers(userId);
+
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
   async addRemoveFriend(req, res) {
     try {
       const { userId, friendId } = req.params;
 
-      const response = await services.addRemoveFriend({ id: userId, friendId });
+      const response = await services.addRemoveFriend({ userId, friendId });
 
       res.json(response);
     } catch (error) {
