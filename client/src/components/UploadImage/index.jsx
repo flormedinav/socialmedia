@@ -84,23 +84,23 @@ const UploadImage = ({
           </Box>
         </label>
       </Box>
-      {touched && errors (
-          <>
-            {touched.picture && errors.picture && (
-              <Typography
-                variant="body2"
-                sx={{
-                  mt: "0.25rem",
-                  color: palette.error.main,
-                  ml: "1rem",
-                  fontSize: "10.3px",
-                }}
-              >
-                {errors.picture}
-              </Typography>
-            )}
-          </>
-        )}
+      {errors && touched && (
+        <>
+          {touched.picture && errors.picture && (
+            <Typography
+              variant="body2"
+              sx={{
+                mt: "0.25rem",
+                color: palette.error.main,
+                ml: "1rem",
+                fontSize: "10.3px",
+              }}
+            >
+              {errors.picture}
+            </Typography>
+          )}
+        </>
+      )}
     </Box>
   );
 };
