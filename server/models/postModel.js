@@ -6,16 +6,21 @@ const commentSchema = new mongoose.Schema({
   isEdited: { type: Boolean, default: false },
 });
 
-const postSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  description: String,
-  picturePath: { type: String, ref: "Image" },
-  likes: {
-    type: Map,
-    of: Boolean,
+const postSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    description: String,
+    picture: { type: String, ref: "Image" },
+    likes: {
+      type: Map,
+      of: Boolean,
+    },
+    comments: [commentSchema],
   },
-  comments: [commentSchema],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Post = mongoose.model("Post", postSchema);
 
