@@ -2,7 +2,7 @@
 
 ## **📌 DESCRIPCIÓN DEL PROYECTO**
 
-¡Bienvenido a nuestra aplicación de redes sociales! Esta aplicación te permite conectarte con tus amigos y compartir tus momentos favoritos. Con una interfaz fácil de usar y características emocionantes, ¡explora un nuevo mundo social con nosotros!
+¡Bienvenido a mi aplicación de redes sociales! Esta aplicación te permite conectarte con tus amigos y compartir tus momentos favoritos. Con una interfaz fácil de usar y características emocionantes, ¡explora un nuevo mundo social con SocialMedia!
 
 En este proyecto podrás:
 <br />
@@ -28,7 +28,7 @@ En este proyecto podrás:
 ✅ Cambiar entre modos claro y oscuro para una experiencia visual personalizada.
 
 <br />
-¡Únete a nuestra comunidad y comienza a socializar hoy mismo!
+¡Únete a la comunidad y comienza a socializar hoy mismo!
 
 <br />
 
@@ -37,6 +37,24 @@ En este proyecto podrás:
 Este proyecto está construido utilizando las siguientes tecnologías:
 
 - **JavaScript**, **HTML**, **CSS**, **React**, **Redux Toolkit**, **Node**, **Express**, **Mongoose**, **MongoDB**, **Material UI**
+
+<br />
+
+## **🧑 CREDENCIALES DE USUARIOS EXISTENTES**
+
+A continuación, te proporciono las credenciales de usuarios existentes para que puedas acceder fácilmente:
+
+```
+USUARIO 1:
+
+   email: jessica@test.com
+   password: 123456
+
+USUARIO 2:
+
+   email: john@test.com
+   password: 123456
+```
 
 <br />
 
@@ -113,7 +131,7 @@ Para ejecutar la aplicación localmente, sigue estos pasos:
 
 `npm run start`
 
-Observaciones: Verificar en la consola de la terminal que aprezca el siguiente mensaje `Initial data added successfully.`
+Observaciones: Por favor, verifica en la consola de la terminal que aparezca el siguiente mensaje: "Initial data added successfully." Esto te permitirá confirmar que la carga inicial de datos se ha realizado correctamente.
 
 - Frontend -> dentro de ./cliente
 
