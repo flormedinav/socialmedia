@@ -9,6 +9,8 @@ import {
   USER_SUCCESS_MESSAGES,
 } from "../constants/usersConstants.js";
 import { formattedFriendsFunction } from "../helpers/formattedFriends.js";
+import getMyTotalLikes from "../helpers/getMyTotalLikes.js";
+import getMyTotalPosts from "../helpers/getMyTotalPosts.js";
 import FriendRequest from "../models/friendRequestModel.js";
 import User from "../models/userModel.js";
 
@@ -17,13 +19,22 @@ class UsersServices {
 
   async getUser(id) {
     try {
-      const user = await User.findById(id).select(NOT_SELECT_PASSWORD);
+      const user = await User.findById(id)
+        .select(NOT_SELECT_PASSWORD)
+        .populate("friends");
 
       if (!user) throw new Error(USER_ERROR_MESSAGES.USER_NOT_FOUND);
 
+      const totalPosts = await getMyTotalPosts(id);
+      const totalLikes = await getMyTotalLikes(id);
+
       return {
         message: USER_SUCCESS_MESSAGES.USER_FOUND,
-        data: user,
+        data: {
+          ...user.toObject(),
+          totalLikes,
+          totalPosts,
+        },
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);

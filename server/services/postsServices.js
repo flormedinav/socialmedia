@@ -6,6 +6,8 @@ import {
   POST_ERROR_MESSAGES,
   POST_SUCCESS_MESSAGES,
 } from "../constants/postsConstants.js";
+import getMyTotalLikes from "../helpers/getMyTotalLikes.js";
+import getMyTotalPosts from "../helpers/getMyTotalPosts.js";
 import Post from "../models/postModel.js";
 import User from "../models/userModel.js";
 
@@ -108,9 +110,14 @@ class PostsServices {
 
       const { data } = await this.getFeedPosts({ userId });
 
+      const totalPosts = await getMyTotalPosts(userId);
+
       return {
         message: POST_SUCCESS_MESSAGES.POST_CREATED,
-        data,
+        data: {
+          data,
+          totalPosts,
+        },
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);
@@ -142,9 +149,14 @@ class PostsServices {
         select: QUERY_SELECT_INFO_USER,
       });
 
+    const totalLikes = await getMyTotalLikes(userId);
+
     return {
       message: POST_SUCCESS_MESSAGES.POSTS_LIKES_UPDATED,
-      data: updatedPost,
+      data: {
+        data: updatedPost,
+        totalLikes,
+      },
     };
   }
 
@@ -223,9 +235,19 @@ class PostsServices {
       comment.text = text;
       await post.save();
 
+      const postUpdated = await Post.findById(postId)
+        .populate({
+          path: "user",
+          select: QUERY_SELECT_INFO_USER,
+        })
+        .populate({
+          path: "comments.user",
+          select: QUERY_SELECT_INFO_USER,
+        });
+
       return {
         message: POST_SUCCESS_MESSAGES.COMMENT_EDITED,
-        data: comment,
+        data: postUpdated,
       };
     } catch (error) {
       throw new Error(error.message || error);
@@ -249,8 +271,19 @@ class PostsServices {
       comment.remove();
       await post.save();
 
+      const postUpdated = await Post.findById(postId)
+        .populate({
+          path: "user",
+          select: QUERY_SELECT_INFO_USER,
+        })
+        .populate({
+          path: "comments.user",
+          select: QUERY_SELECT_INFO_USER,
+        });
+
       return {
         message: POST_SUCCESS_MESSAGES.COMMENT_DELETED,
+        data: postUpdated,
       };
     } catch (error) {
       throw new Error(error.message || error);

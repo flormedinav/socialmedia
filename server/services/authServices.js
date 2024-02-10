@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import User from "../models/userModel.js";
 import createAccessToken from "../lib/jwt.js";
 import { userWithoutPasswordFunction } from "../helpers/userWithoutPassword.js";
+import getMyTotalPosts from "../helpers/getMyTotalPosts.js";
+import getMyTotalLikes from "../helpers/getMyTotalLikes.js";
 
 class AuthServices {
   constructor() {}
@@ -41,7 +43,14 @@ class AuthServices {
 
       return {
         message: "User created",
-        data: { user: userWithoutPassword, token },
+        data: {
+          user: {
+            ...userWithoutPassword,
+            totalPosts: 0,
+            totalLikes: 0,
+          },
+          token,
+        },
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);
@@ -50,7 +59,7 @@ class AuthServices {
 
   async login({ email, password }) {
     try {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).populate("friends");
 
       if (!user) throw new Error("Unregistered user");
 
@@ -60,12 +69,19 @@ class AuthServices {
 
       const token = await createAccessToken({ id: user._id });
 
+      const totalPosts = await getMyTotalPosts(user._id);
+      const totalLikes = await getMyTotalLikes(user._id);
+
       const userWithoutPassword = userWithoutPasswordFunction(user);
 
       return {
         message: "User logged in",
         data: {
-          user: userWithoutPassword,
+          user: {
+            ...userWithoutPassword,
+            totalLikes,
+            totalPosts,
+          },
           token,
         },
       };
