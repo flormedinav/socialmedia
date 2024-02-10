@@ -21,9 +21,21 @@ export const userSlice = createSlice({
         console.error("User friends non-existent");
       }
     },
+    setTotalLikes: (state, action) => {
+      state.user.totalLikes = action.payload;
+    },
+    setTotalPosts: (state, action) => {
+      state.user.totalPosts = action.payload;
+    },
   },
 });
 
-export const { setUser, setFriends, setClearUser } = userSlice.actions;
+export const {
+  setUser,
+  setFriends,
+  setClearUser,
+  setTotalLikes,
+  setTotalPosts,
+} = userSlice.actions;
 
 export default userSlice.reducer;
