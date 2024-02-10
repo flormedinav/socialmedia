@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik } from "formik";
-import { Box, useTheme, useMediaQuery, TextField } from "@mui/material";
+import { Box, useMediaQuery, TextField } from "@mui/material";
 
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import {
@@ -10,16 +10,11 @@ import {
   FORM_CONSTANTS,
 } from "../../constants/formConstants";
 import { registerSchema } from "../../schema";
-import {
-  FormBase,
-  FormButton,
-  FormInputImage,
-  UploadImage,
-} from "../../components";
+import { FormBase, FormButton, UploadImage } from "../../components";
 import { FIELD_CONFIG_REGISTER } from "../../constants/formConstants";
 import { authRegister } from "../../services/authServices";
 import { setLogin } from "../../state/slices/authSlice";
-import { setUser } from "../../state/slices/userSlice";
+import { setFriends, setUser } from "../../state/slices/userSlice";
 import { createUrlCloudinary } from "../../services/cloudinaryServices";
 
 const initialValuesRegister = {
@@ -55,6 +50,7 @@ const RegisterPage = () => {
     if (response) {
       dispatch(setLogin(response?.data));
       dispatch(setUser(response?.data));
+      dispatch(setFriends(response?.data.friends));
 
       navigate("/home");
     }
@@ -119,6 +115,7 @@ const RegisterPage = () => {
               setFileName={setFileName}
               errors={errors}
               touched={touched}
+              text={FORM_CONSTANTS.LABELS.UPLOAD_IMGAE}
             />
 
             <FormButton
