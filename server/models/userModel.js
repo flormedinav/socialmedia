@@ -9,8 +9,6 @@ const UserSchema = new mongoose.Schema(
     picture: String,
     location: String,
     occupation: String,
-    viewedProfile: { type: Number, default: 0 },
-    impressions: { type: Number, default: 0 },
     isPrivate: { type: Boolean, default: false },
     friendRequestsReceived: [
       { type: mongoose.Schema.Types.ObjectId, ref: "FriendRequest" },
@@ -19,7 +17,6 @@ const UserSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "FriendRequest" },
     ],
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   {
     timestamps: true,
