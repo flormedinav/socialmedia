@@ -1,10 +1,11 @@
+import { func, string, bool } from "prop-types";
 import { Button, CircularProgress } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
 import { colorTokens } from "../../theme";
 import { TYPE_THEMES } from "../../constants/global";
 
-const ButtonSend = ({ disabled, onClick, isCreating, textButton }) => {
+const ButtonSend = ({ disabled, onClick, isLoading, textButton }) => {
   const { palette } = useTheme();
 
   return (
@@ -13,7 +14,7 @@ const ButtonSend = ({ disabled, onClick, isCreating, textButton }) => {
       onClick={onClick}
       sx={{
         color: colorTokens.grey[10],
-        backgroundColor: isCreating
+        backgroundColor: isLoading
           ? palette.neutral.light
           : palette.primary.main,
         borderRadius: "3rem",
@@ -31,9 +32,23 @@ const ButtonSend = ({ disabled, onClick, isCreating, textButton }) => {
         },
       }}
     >
-      {isCreating ? <CircularProgress size={20} /> : <>{textButton}</>}
+      {isLoading ? <CircularProgress size={20} /> : <>{textButton}</>}
     </Button>
   );
 };
 
 export default ButtonSend;
+
+ButtonSend.propTypes = {
+  disabled: bool,
+  isLoading: bool,
+  onClick: func,
+  textButton: string,
+};
+
+ButtonSend.defaultProps = {
+  disabled: false,
+  onClick: () => {},
+  isLoading: false,
+  textButton: "",
+};
