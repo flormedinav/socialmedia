@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { string } from "prop-types";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -7,36 +8,40 @@ import {
   LocationOnOutlined,
   WorkOutlineOutlined,
 } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  useTheme,
+  CircularProgress,
+} from "@mui/material";
 
-import { FlexBetween, WidgetWrapper } from "../";
+import { FlexBetween, WidgetWrapper, AvatarUser } from "../";
 import { getUser } from "../../services/usersServices";
 import { USER_CONSTANTS } from "../../constants/userConstans";
 import { checkString, stringToZero } from "../../utils/formatedString";
-import AvatarUser from "../AvatarUser";
 
-const UserWidget = ({ userId }) => {
-  const [user, setUser] = useState(null);
+const UserWidget = ({ user, userId }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const { token } = useSelector((state) => state.auth);
-
+  console.log({ user }, "en user");
   const darkColor = palette.neutral.dark;
   const mediumColor = palette.neutral.medium;
   const mainColor = palette.neutral.main;
 
-  const getUserInfo = async () => {
-    const response = await getUser({ userId, token });
-
-    setUser(response.data);
-  };
-
-  useEffect(() => {
-    getUserInfo();
-  }, []);
-
   if (!user) {
-    return null;
+    return (
+      <WidgetWrapper
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "400px",
+        }}
+      >
+        <CircularProgress />
+      </WidgetWrapper>
+    );
   }
 
   const {
@@ -45,8 +50,8 @@ const UserWidget = ({ userId }) => {
     location,
     occupation,
     picture,
-    viewsProfile,
-    impressions,
+    totalPosts,
+    totalLikes,
     friends,
   } = user;
 
@@ -76,7 +81,7 @@ const UserWidget = ({ userId }) => {
               {firstName} {lastName}
             </Typography>
             <Typography color={mediumColor}>
-              {friends.length} friends
+              {friends?.length} friends
             </Typography>
           </Box>
         </FlexBetween>
@@ -101,18 +106,18 @@ const UserWidget = ({ userId }) => {
       <Box p="1rem 0">
         <FlexBetween mb="0.5rem">
           <Typography color={mediumColor}>
-            {`${USER_CONSTANTS.VIEWS_PROFILE} `}
+            {`${USER_CONSTANTS.TOTAL_POSTS} `}
           </Typography>
           <Typography color={mainColor} fontWeight="500">
-            {stringToZero(viewsProfile)}
+            {stringToZero(totalPosts)}
           </Typography>
         </FlexBetween>
         <FlexBetween mb="0.5rem">
           <Typography color={mediumColor}>
-            {`${USER_CONSTANTS.IMPRESIONS_POST} `}
+            {`${USER_CONSTANTS.TOTAL_LIKES} `}
           </Typography>
           <Typography color={mainColor} fontWeight="500">
-            {stringToZero(impressions)}
+            {stringToZero(totalLikes)}
           </Typography>
         </FlexBetween>
       </Box>
@@ -164,3 +169,11 @@ const UserWidget = ({ userId }) => {
 };
 
 export default UserWidget;
+
+UserWidget.propTypes = {
+  userId: string,
+};
+
+UserWidget.defaultProps = {
+  userId: "",
+};
