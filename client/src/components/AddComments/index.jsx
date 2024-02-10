@@ -34,6 +34,12 @@ const AddComments = ({ postId }) => {
     setIsCreating(false);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleCreateComment();
+    }
+  };
+
   const handleChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -60,10 +66,11 @@ const AddComments = ({ postId }) => {
           padding: ".25rem .75rem",
           width: "85%",
         }}
+        onKeyDown={handleKeyDown}
       />
       <ButtonSend
         disabled={!comment || isCreating}
-        isCreating={isCreating}
+        isLoading={isCreating}
         onClick={handleCreateComment}
         textButton={POSTS_CONSTANTS.COMMENTS.ADD_COMENT}
       />
