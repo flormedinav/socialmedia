@@ -2,12 +2,14 @@ import AddComments from "./AddComments";
 import AdvertWidget from "./AdvertWidget";
 import AvatarUser from "./AvatarUser";
 import ButtonSend from "./ButtonSend";
+import Comments from "./Comments";
+import CommentItem from "./CommentItem";
 import FlexBetween from "./FlexBetween";
 import FormBase from "./Form/FormBase";
 import FormButton from "./Form/FormButton";
-import FormInputImage from "./Form/FormInputImage";
 import Friend from "./Friend";
 import FriendListWidget from "./FriendListWidget";
+import ModalDelete from "./ModalDelete";
 import Navbar from "./Navbar";
 import Logo from "./Logo";
 import PostCreator from "./PostCreator";
@@ -23,12 +25,14 @@ export {
   AdvertWidget,
   AvatarUser,
   ButtonSend,
+  Comments,
+  CommentItem,
   FlexBetween,
   FormBase,
   FormButton,
-  FormInputImage,
   Friend,
   FriendListWidget,
+  ModalDelete,
   Navbar,
   Logo,
   PostCreator,
