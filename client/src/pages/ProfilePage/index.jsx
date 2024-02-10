@@ -10,24 +10,39 @@ import {
   PostCreator,
   UserWidget,
 } from "../../components";
-import { getUser } from "../../services/usersServices";
+import { getUser, getUserFriends } from "../../services/usersServices";
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import { setPosts } from "../../state/slices/postsSlice";
+import { getUserPosts } from "../../services/postsServices";
 
 const ProfilePage = () => {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
-  const { userId } = useParams();
+  const { posts } = useSelector((state) => state.posts);
   const { token } = useSelector((state) => state.auth);
-  const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
   const dispatch = useDispatch();
+  const { userId } = useParams();
+  const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
-  const infoUser = async () => {
-    const response = await getUser({ userId, token });
-    setUser(response.data);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [postsData, userData] = await Promise.all([
+        getUserPosts({ userId, token }),
+        getUser({ userId, token }),
+      ]);
+
+      dispatch(setPosts(postsData.data));
+      setUser(userData.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    infoUser();
+    fetchData();
   }, []);
 
   if (!user) return null;
@@ -43,9 +58,9 @@ const ProfilePage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget userId={userId} />
+          <UserWidget user={user} userId={userId} />
           <Box m="2rem 0" />
-          <FriendListWidget userId={userId} />
+          <FriendListWidget friends={user.friends} userId={userId} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
@@ -53,7 +68,7 @@ const ProfilePage = () => {
         >
           <PostCreator picturePath={user.picture} />
           <Box m="2rem 0" />
-          <PostsWidget userId={userId} isProfile />
+          <PostsWidget posts={posts} loading={loading} isProfile />
         </Box>
       </Box>
     </Box>
