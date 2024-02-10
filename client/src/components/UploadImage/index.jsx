@@ -1,8 +1,7 @@
+import { func, string, shape } from "prop-types";
 import { Box, Typography, useTheme } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { EditOutlined } from "@mui/icons-material";
-
-import { POSTS_CONSTANTS } from "../../constants/postsConstants";
 
 const UploadImage = ({
   setFieldValue,
@@ -10,6 +9,7 @@ const UploadImage = ({
   setFileName,
   errors,
   touched,
+  text,
 }) => {
   const { palette } = useTheme();
 
@@ -40,7 +40,8 @@ const UploadImage = ({
         sx={{
           height: "45px",
           border: "1px solid",
-          borderColor: palette.neutral.light,
+          borderColor: palette.neutral.medium,
+          backgroundColor: palette.neutral.light,
           p: "1rem",
           borderRadius: "9px",
         }}
@@ -59,7 +60,7 @@ const UploadImage = ({
         <label htmlFor="upload-image">
           <Box
             variant="text"
-            color={palette.neutral.medium}
+            color={palette.neutral.main}
             size="medium"
             display="flex"
             alignItems="center"
@@ -76,9 +77,7 @@ const UploadImage = ({
             ) : (
               <>
                 <CloudUploadIcon />
-                <Typography ml="1rem">
-                  {POSTS_CONSTANTS.POST_CREATOR.UPLOAD_PHOTO}
-                </Typography>
+                <Typography ml="1rem">{text}</Typography>
               </>
             )}
           </Box>
@@ -106,3 +105,21 @@ const UploadImage = ({
 };
 
 export default UploadImage;
+
+UploadImage.propTypes = {
+  setFieldValue: func,
+  setFileName: func,
+  fileName: string,
+  text: string,
+  errors: shape({}),
+  touched: shape({}),
+};
+
+UploadImage.defaultProps = {
+  setFieldValue: () => {},
+  setFileName: () => {},
+  fileName: "",
+  text: "",
+  errors: null,
+  touched: null,
+};
