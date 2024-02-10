@@ -3,27 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography, useTheme } from "@mui/material";
 
 import { WidgetWrapper, Friend, FlexBetween } from "../";
-import { setFriends } from "../../state/slices/userSlice";
-import { getUserFriends } from "../../services/usersServices";
 import { FRIENDS_CONSTANTS } from "../../constants/friendsConstants";
 
-const FriendListWidget = ({ userId }) => {
-  const dispatch = useDispatch();
+const FriendListWidget = ({ friends }) => {
   const { palette } = useTheme();
-  const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.user);
-
-  const { friends } = user;
-
-  const getFriends = async () => {
-    const response = await getUserFriends({ userId, token });
-
-    dispatch(setFriends(response.data));
-  };
-
-  useEffect(() => {
-    getFriends();
-  }, []);
 
   return (
     <WidgetWrapper>
@@ -36,7 +19,7 @@ const FriendListWidget = ({ userId }) => {
         {FRIENDS_CONSTANTS.LIST_FRIENDS.TITLE}
       </Typography>
 
-      {friends && friends.length !== 0 ? (
+      {friends && friends?.length !== 0 ? (
         <Box display="flex" flexDirection="column" gap="1.5rem" mb="1.5rem">
           {friends?.map((friend) => (
             <Friend
