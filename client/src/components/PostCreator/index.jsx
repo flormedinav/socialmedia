@@ -1,23 +1,20 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ImageOutlined } from "@mui/icons-material";
-import {
-  Divider,
-  Typography,
-  InputBase,
-  useTheme,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import { Divider, Typography, InputBase, useTheme } from "@mui/material";
 
-import { FlexBetween, WidgetWrapper, UploadImage } from "..";
+import {
+  FlexBetween,
+  WidgetWrapper,
+  UploadImage,
+  ButtonSend,
+  AvatarUser,
+} from "..";
 import { setPosts } from "../../state/slices/postsSlice";
-import { TYPE_THEMES } from "../../constants/global";
 import { createPost } from "../../services/postsServices";
-import AvatarUser from "../AvatarUser";
 import { POSTS_CONSTANTS } from "../../constants/postsConstants";
 import { createUrlCloudinary } from "../../services/cloudinaryServices";
-import { colorTokens } from "../../theme";
+import { setTotalPosts } from "../../state/slices/userSlice";
 
 const PostCreator = () => {
   const [isImageSelected, setIsImageSelected] = useState(false);
@@ -26,16 +23,13 @@ const PostCreator = () => {
   const [post, setPost] = useState("");
   const [isCreatingPost, setIsCreatingPost] = useState(false);
 
-  const { palette } = useTheme();
-
   const dispatch = useDispatch();
   const { _id, picture, firstName, lastName } = useSelector(
     (state) => state.user.user
   );
   const { token } = useSelector((state) => state.auth);
 
-  const mediumMain = palette.neutral.mediumMain;
-  const medium = palette.neutral.medium;
+  const { palette } = useTheme();
 
   const handleCreatePost = async () => {
     const sendBody = {
@@ -52,9 +46,11 @@ const PostCreator = () => {
         const responsePicture = await createUrlCloudinary(image);
         sendBody.picture = responsePicture.data.secure_url;
       }
-      const response = await createPost({ userId: _id, token, sendBody });
+      const { data } = await createPost({ userId: _id, token, sendBody });
 
-      dispatch(setPosts(response.data));
+      dispatch(setPosts(data.data));
+      dispatch(setTotalPosts(data.totalPosts));
+
       clearPostForm();
     } catch (error) {
       console.error("Error creating post: ", error);
@@ -105,11 +101,13 @@ const PostCreator = () => {
           }}
         />
       </FlexBetween>
+
       {isImageSelected && (
         <UploadImage
           setFieldValue={setImage}
           fileName={fileName}
           setFileName={setFileName}
+          text={POSTS_CONSTANTS.POST_CREATOR.UPLOAD_PHOTO}
         />
       )}
 
@@ -117,44 +115,38 @@ const PostCreator = () => {
 
       <FlexBetween>
         <FlexBetween gap="0.25rem" onClick={handleClickToggleImageSelection}>
-          <ImageOutlined sx={{ color: mediumMain }} />
+          <ImageOutlined
+            sx={{
+              color: isImageSelected
+                ? palette.primary.main
+                : palette.neutral.mediumMain,
+            }}
+          />
           <Typography
-            color={mediumMain}
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+            color={
+              isImageSelected
+                ? palette.primary.main
+                : palette.neutral.mediumMain
+            }
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+                color: isImageSelected
+                  ? palette.primary.light
+                  : palette.neutral.medium,
+              },
+            }}
           >
             {POSTS_CONSTANTS.POST_CREATOR.ACTIONS.ADD_IMAGE}
           </Typography>
         </FlexBetween>
 
-        <Button
+        <ButtonSend
           disabled={!post || isCreatingPost}
           onClick={handleCreatePost}
-          sx={{
-            color: colorTokens.grey[10],
-            backgroundColor: isCreatingPost
-              ? palette.neutral.light
-              : palette.primary.main,
-            borderRadius: "3rem",
-            p: "8px 16px",
-            "&:hover": {
-              backgroundColor: colorTokens.primary[600],
-              color: colorTokens.grey[10],
-            },
-            "&.Mui-disabled": {
-              color:
-                palette.mode === TYPE_THEMES.LIGHT
-                  ? "rgba(0, 0, 0, 0.3)"
-                  : "rgba(255, 255, 255, 0.2)",
-              backgroundColor: palette.neutral.light,
-            },
-          }}
-        >
-          {isCreatingPost ? (
-            <CircularProgress size={20} />
-          ) : (
-            POSTS_CONSTANTS.POST_CREATOR.BUTTON_CREATE
-          )}
-        </Button>
+          isLoading={isCreatingPost}
+          textButton={POSTS_CONSTANTS.POST_CREATOR.BUTTON_CREATE}
+        />
       </FlexBetween>
     </WidgetWrapper>
   );
