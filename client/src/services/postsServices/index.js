@@ -110,3 +110,58 @@ export const addComment = async ({ userId, token, postId, sendBody }) => {
     );
   }
 };
+
+export const editComment = async ({
+  userId,
+  token,
+  postId,
+  commentId,
+  sendBody,
+}) => {
+  try {
+    const response = await instance.patch(
+      `/posts/${userId}/${postId}/edit-comment/${commentId}`,
+      sendBody,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    callToast(TYPE_TOAST.SUCCESS, response.data.message);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in editComment: ", error);
+
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.POSTS.ERROR.EDIT_COMMENT
+    );
+  }
+};
+
+export const deleteComment = async ({ userId, token, postId, commentId }) => {
+  try {
+    const response = await instance.delete(
+      `/posts/${userId}/${postId}/delete-comment/${commentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    callToast(TYPE_TOAST.SUCCESS, response.data.message);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in deleteComment: ", error);
+
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.POSTS.ERROR.DELETE_COMMENT
+    );
+  }
+};
