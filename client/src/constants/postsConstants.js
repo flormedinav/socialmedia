@@ -8,6 +8,14 @@ export const POSTS_CONSTANTS = {
     },
   },
   COMMENTS: {
-    ADD_COMENT: 'Agregar'
-  }
+    ADD_COMENT: "Agregar",
+    MODAL_DELETE: {
+      TITLE: "Alerta",
+      SUBTITLE: "¿Estás seguro de que quieres eliminar el comentario?",
+      BUTTON: {
+        CONFIRM: "Confirmar",
+        CANCEL: "Cancelar",
+      },
+    },
+  },
 };

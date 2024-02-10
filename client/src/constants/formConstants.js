@@ -11,6 +11,7 @@ export const FORM_CONSTANTS = {
     LOCATION: "Ubicación",
     OCUPATION: "Ocupación",
     PICTURE: "Foto de perfil",
+    UPLOAD_IMGAE: "Añade una foto de perfil aquí."
   },
   NAME: {
     FIRST_NAME: "firstName",

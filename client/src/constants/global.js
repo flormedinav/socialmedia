@@ -10,4 +10,5 @@ export const GLOBAL_CONSTANST = {
 export const MEDIA_QUERY_MIN_WIDTH = {
   1000: "(min-width: 1000px)",
   600: "(min-width: 600px)",
+  350: "(min-width: 350px)",
 };

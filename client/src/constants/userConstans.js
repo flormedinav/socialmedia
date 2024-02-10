@@ -1,6 +1,6 @@
 export const USER_CONSTANTS = {
-  VIEWS_PROFILE: "Visualizaciones",
-  IMPRESIONS_POST: "Impresiones",
+  TOTAL_POSTS: "Publicaciones totales",
+  TOTAL_LIKES: "Me gustas totales",
   SOCIAL_PROFILES: {
     TITLE: "Redes sociales",
     TWITTER: {

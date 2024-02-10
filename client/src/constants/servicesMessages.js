@@ -29,6 +29,8 @@ export const SERVICES_MESSAGES = {
       LIKE_POST:
         "Error al cambiar el estado del me gustar. Por favor, inténtalo de nuevo.",
       ADD_COMMENT: "Error al añadir el comentario.",
+      EDIT_COMMENT: "Error al editar el comentario.",
+      DELETE_COMMENT: "Error al eliminar el comentario.",
     },
   },
 };
