@@ -13,11 +13,11 @@ import {
   FlexBetween,
   WidgetWrapper,
   Friend,
-  AddComments,
-  AvatarUser,
+  Comments,
 } from "../";
 import { setPost } from "../../state/slices/postsSlice";
 import { likePost } from "../../services/postsServices";
+import { setTotalLikes } from "../../state/slices/userSlice";
 
 const PostWidget = ({
   postId,
@@ -32,20 +32,20 @@ const PostWidget = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
   const loggedInUserId = useSelector((state) => state.user.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
+  const likeCount = Object.keys(likes)?.length;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
-    const response = await likePost({ userId: loggedInUserId, postId, token });
+    const { data } = await likePost({ userId: loggedInUserId, postId, token });
 
-    dispatch(setPost(response.data));
+    dispatch(setPost(data.data));
+    dispatch(setTotalLikes(data.totalLikes));
   };
 
   return (
@@ -82,10 +82,15 @@ const PostWidget = ({
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
+            <IconButton
+              onClick={() => setIsComments(!isComments)}
+              sx={{
+                backgroundColor: isComments ? palette.neutral.light : "fff",
+              }}
+            >
               <ChatBubbleOutlineOutlined />
             </IconButton>
-            <Typography>{comments.length}</Typography>
+            <Typography>{comments?.length}</Typography>
           </FlexBetween>
         </FlexBetween>
 
@@ -93,45 +98,7 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
-      {isComments && (
-        <>
-          <AddComments postId={postId} />
-          {comments && comments.length !== 0 && (
-            <Box
-              mt="0.5rem"
-              display="flex"
-              flexDirection="column"
-              gap="1rem"
-              mb="1.5rem"
-            >
-              {comments.map((comment, i) => (
-                <Box key={comment._id}>
-                  <Divider
-                    sx={{
-                      mb: "1rem",
-                    }}
-                  />
-                  <Box display="flex" gap="1rem">
-                    <AvatarUser picture={comment.user.picture} size="30px" />
-                    <Box display="flex" flexDirection="column" gap="0.5rem">
-                      <Typography
-                        variant="body1"
-                        onClick={() => {
-                          navigate(`/profile/${comment.user._id}`);
-                          navigate(0);
-                        }}
-                      >{`${comment.user.firstName} ${comment.user.lastName}`}</Typography>
-                      <Typography variant="body2" sx={{ color: main }}>
-                        {`${comment.text}`}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-              ))}
-            </Box>
-          )}
-        </>
-      )}
+      {isComments && <Comments postId={postId} comments={comments} />}
     </WidgetWrapper>
   );
 };
