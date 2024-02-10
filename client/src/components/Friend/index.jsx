@@ -1,3 +1,4 @@
+import { func, string, bool } from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
@@ -28,8 +29,9 @@ const Friend = ({
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
+  const neutralLight = palette.neutral.light;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  const isFriend = friends?.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
     const response = await addRemoveFriend({ userId: _id, token, friendId });
@@ -53,7 +55,7 @@ const Friend = ({
             fontWeight="500"
             sx={{
               "&:hover": {
-                color: palette.primary.light,
+                color: primaryLight,
                 cursor: "pointer",
               },
             }}
@@ -68,7 +70,10 @@ const Friend = ({
       {_id !== friendId && (
         <IconButton
           onClick={() => patchFriend()}
-          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          sx={{
+            backgroundColor: isFriend ? neutralLight : primaryLight,
+            p: "0.6rem",
+          }}
         >
           {isFriend ? (
             <PersonRemoveOutlined
@@ -86,3 +91,23 @@ const Friend = ({
 };
 
 export default Friend;
+
+Friend.propTypes = {
+  friendId: string,
+  name: string,
+  subtitle: string,
+  userPicture: string,
+  sizePicture: string,
+  sizeIcon: string,
+  sizeName: string,
+};
+
+Friend.defaultProps = {
+  friendId: "",
+  name: "",
+  subtitle: "",
+  userPicture: "",
+  sizePicture: "55px",
+  sizeIcon: "medium",
+  sizeName: "h5",
+};
