@@ -1,0 +1,81 @@
+.custom-modal-dark .ant-modal-content {
+  background-color: #1a1a1a;
+}
+
+.custom-modal-dark .ant-modal-content .ant-modal-close svg {
+  color: white;
+}
+
+.custom-modal-dark .ant-modal-header {
+  background-color: #1a1a1a;
+}
+
+.custom-modal-dark .ant-modal-title {
+  color: white;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-dark .ant-modal-body {
+  color: white;
+  margin-bottom: 2rem;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-dark .ant-modal-footer .ant-btn-primary {
+  background-color: #00d5fa;
+  color: white;
+  text-transform: uppercase;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-dark .ant-modal-footer .ant-btn-primary:hover {
+  background-color: #00a0bc;
+}
+
+.custom-modal-dark .ant-modal-footer .ant-btn-default {
+  background-color: transparent;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-dark .ant-modal-footer .ant-btn-default:hover {
+  color: #00d5fa;
+  background-color: transparent;
+}
+
+/*MODE LIGHT*/
+
+.custom-modal-light .ant-modal-title {
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-light .ant-modal-body {
+  margin-bottom: 2rem;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-light .ant-modal-footer .ant-btn-primary {
+  background-color: #00d5fa;
+  color: white;
+  text-transform: uppercase;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-light .ant-modal-footer .ant-btn-primary:hover {
+  background-color: #00a0bc;
+}
+
+.custom-modal-light .ant-modal-footer .ant-btn-default {
+  background-color: transparent;
+  border: none;
+  color: #666666;
+  text-transform: uppercase;
+  font-family: "Rubik", sans-serif;
+}
+
+.custom-modal-light .ant-modal-footer .ant-btn-default:hover {
+  color: #00d5fa;
+  background-color: transparent;
+}
