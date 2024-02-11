@@ -5,6 +5,7 @@ import createAccessToken from "../lib/jwt.js";
 import { userWithoutPasswordFunction } from "../helpers/userWithoutPassword.js";
 import getMyTotalPosts from "../helpers/getMyTotalPosts.js";
 import getMyTotalLikes from "../helpers/getMyTotalLikes.js";
+import { QUERY_SELECT_INFO_USER_WITHPOUT_POSTS } from "../constants/globals.js";
 
 class AuthServices {
   constructor() {}
@@ -59,7 +60,10 @@ class AuthServices {
 
   async login({ email, password }) {
     try {
-      const user = await User.findOne({ email }).populate("friends");
+      const user = await User.findOne({ email }).populate({
+        path: "friends",
+        select: QUERY_SELECT_INFO_USER_WITHPOUT_POSTS,
+      });
 
       if (!user) throw new Error("Unregistered user");
 
