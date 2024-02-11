@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import UsersController from "../controllers/userController.js";
 import authorizationMiddleware from "../middlewares/authorizationMiddleware.js";
+import userIdMatchMiddleware from "../middlewares/userIdMatchMiddleware .js";
 
 const router = Router();
 const controllers = new UsersController();
@@ -13,13 +14,17 @@ router.get("/:userId", authorizationMiddleware, controllers.getUser);
 router.get("/:userId/search", authorizationMiddleware, controllers.searchUsers);
 
 //Buscar usuarios
-router.get("/:userId/all-users", authorizationMiddleware, controllers.getAllUsers);
-
+router.get(
+  "/:userId/all-users",
+  authorizationMiddleware,
+  controllers.getAllUsers
+);
 
 //Obtener amigos de un usuario
 router.get(
   "/:userId/friends",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.getUserFriends
 );
 
@@ -27,6 +32,7 @@ router.get(
 router.put(
   "/:userId/friends/:friendId",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.addRemoveFriend
 );
 
@@ -34,6 +40,7 @@ router.put(
 router.delete(
   "/:userId/friends/:friendId",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.removeFriend
 );
 
@@ -41,6 +48,7 @@ router.delete(
 router.get(
   "/:userId/friend-requests/received",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.getFriendRequestsReceived
 );
 
@@ -48,6 +56,7 @@ router.get(
 router.get(
   "/:userId/friend-requests/sent",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.getFriendRequestsSent
 );
 
@@ -55,6 +64,7 @@ router.get(
 router.patch(
   "/:userId/friend-requests/:friendId",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.sendFriendRequest
 );
 
@@ -62,6 +72,7 @@ router.patch(
 router.patch(
   "/:userId/friend-requests/:friendRequestId/:status",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.respondToFriendRequest
 );
 
@@ -69,6 +80,7 @@ router.patch(
 router.patch(
   "/:userId/privacy-status/:isPrivate",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.changePrivacyStatus
 );
 
