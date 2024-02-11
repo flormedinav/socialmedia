@@ -73,13 +73,16 @@ export const deletePost = async ({ userId, postId, token }) => {
   }
 };
 
-export const getFeedPosts = async ({ userId, token }) => {
+export const getFeedPosts = async ({ userId, token, page }) => {
   try {
-    const response = await instance.get(`/posts/${userId}/feed-posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.get(
+      `/posts/${userId}/feed-posts?page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response.data;
   } catch (error) {
@@ -92,13 +95,16 @@ export const getFeedPosts = async ({ userId, token }) => {
   }
 };
 
-export const getUserPosts = async ({ userId, token }) => {
+export const getUserPosts = async ({ userId, token, page }) => {
   try {
-    const response = await instance.get(`/posts/${userId}/user-posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await instance.get(
+      `/posts/${userId}/user-posts?page=${page}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return response.data;
   } catch (error) {
