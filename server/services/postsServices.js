@@ -124,6 +124,58 @@ class PostsServices {
     }
   }
 
+  async editPost({ userId, postId, description, picture }) {
+    try {
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        throw new Error(GLOBAL_ERROR_MESSAGES.POST_NOT_FOUND);
+      }
+
+      post.description = description;
+      post.picture = picture;
+      await post.save();
+
+      const { data } = await this.getFeedPosts({ userId });
+
+      return {
+        message: POST_SUCCESS_MESSAGES.POST_UPDATED,
+        data,
+      };
+    } catch (error) {
+      throw new Error(`${error.message || error}`);
+    }
+  }
+
+  async deletePost({ userId, postId }) {
+    try {
+      const post = await Post.findById(postId);
+
+      if (!post) {
+        throw new Error(GLOBAL_ERROR_MESSAGES.POST_NOT_FOUND);
+      }
+
+      if (post.user.toString() !== userId) {
+        throw new Error(GLOBAL_ERROR_MESSAGES.UNAUTHORIZED);
+      }
+
+      await post.remove();
+
+      const { data } = await this.getFeedPosts({ userId });
+      const totalPosts = await getMyTotalPosts(userId);
+
+      return {
+        message: POST_SUCCESS_MESSAGES.POST_DELETED,
+        data: {
+          data,
+          totalPosts,
+        },
+      };
+    } catch (error) {
+      throw new Error(`${error.message || error}`);
+    }
+  }
+
   async likePost({ postId, userId }) {
     const post = await Post.findById(postId);
 
