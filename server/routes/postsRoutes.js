@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import PostsController from "../controllers/postsController.js";
 import authorizationMiddleware from "../middlewares/authorizationMiddleware.js";
+import userIdMatchMiddleware from "../middlewares/userIdMatchMiddleware .js";
 
 const router = Router();
 const controllers = new PostsController();
@@ -27,13 +28,31 @@ router.get(
 router.post(
   "/:userId/new-post",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.createPost
 );
 
-// Obtener los likes del post
+// Editar un post
+router.patch(
+  "/:userId/:postId",
+  authorizationMiddleware,
+  userIdMatchMiddleware,
+  controllers.editPost
+);
+
+// Eliminar un post
+router.delete(
+  "/:userId/:postId",
+  authorizationMiddleware,
+  userIdMatchMiddleware,
+  controllers.deletePost
+);
+
+// Dar likes a los posts post
 router.patch(
   "/:userId/:postId/like",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.likePost
 );
 
@@ -41,6 +60,7 @@ router.patch(
 router.post(
   "/:userId/:postId/add-comment",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.addComment
 );
 
@@ -48,6 +68,7 @@ router.post(
 router.patch(
   "/:userId/:postId/edit-comment/:commentId",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.editComment
 );
 
@@ -55,6 +76,7 @@ router.patch(
 router.delete(
   "/:userId/:postId/delete-comment/:commentId",
   authorizationMiddleware,
+  userIdMatchMiddleware,
   controllers.deleteComment
 );
 
