@@ -1,51 +1,41 @@
 import { useEffect, useState } from "react";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import Navbar from "../../components/Navbar";
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import {
   AdvertWidget,
   FriendListWidget,
+  InfiniteScrollBase,
   PostCreator,
   PostsWidget,
   SearchFriendWidget,
   UserWidget,
 } from "../../components";
-import { setPosts } from "../../state/slices/postsSlice";
-import { getFeedPosts } from "../../services/postsServices";
-import { setFriends } from "../../state/slices/userSlice";
-import { getUserFriends } from "../../services/usersServices";
+
+import useGetFeedPosts from "../../hooks/usePosts/useGetFeedPosts";
 
 const HomePage = () => {
-  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.user);
-  const { posts } = useSelector((state) => state.posts);
+
   const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [postsData] = await Promise.all([
-        getFeedPosts({ userId: user._id, token }),
-      ]);
-
-      dispatch(setPosts(postsData.data));
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { postsData, hasNextPage, fetchNextPage, isLoading } = useGetFeedPosts({
+    userId: user._id,
+    token,
+    userFriends: user.friends,
+  });
 
   return (
-    <Box>
+    <InfiniteScrollBase
+      dataLength={postsData?.dataLength || 0}
+      hasNextPage={hasNextPage}
+      fetchNextPage={fetchNextPage}
+    >
       <Navbar isNavigate />
       <Box
         width="100%"
@@ -62,7 +52,8 @@ const HomePage = () => {
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
           <PostCreator />
-          <PostsWidget loading={loading} posts={posts} />
+          <Box m="2rem 0" />
+          <PostsWidget loading={isLoading} posts={postsData} />
         </Box>
         {isNonMobileScreens && (
           <Box flexBasis="26%">
@@ -73,7 +64,7 @@ const HomePage = () => {
           </Box>
         )}
       </Box>
-    </Box>
+    </InfiniteScrollBase>
   );
 };
 
