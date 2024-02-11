@@ -20,10 +20,6 @@ const authorizationMiddleware = (req, res, next) => {
       }
     }
 
-    // if (req.params.userId !== user.id) {
-    //   return res.status(403).json({ message: "Unauthorized access" });
-    // }
-
     req.user = user;
     next();
   });
