@@ -8,8 +8,9 @@ export const POST_SUCCESS_MESSAGES = {
   POSTS_UPDATED: "Publicaciones actualizadas correctamente.",
   POSTS_LIKES_UPDATED:
     "Me gustas de la publicaciones actualizados correctamente.",
-  POST_UPDATED: "Publicación actualizada correctamente.",
   POST_CREATED: "Publicación creada correctamente.",
+  POST_UPDATED: "Publicación actualizada correctamente.",
+  POST_DELETED: "Publicación eliminada correctamente.",
   FEED_POSTS_RETRIEVED: "Publicaciones del feed obtenidas correctamente.",
   ALL_POSTS_RETRIEVED: "Todas las publicaciones obtenidas correctamente.",
   USER_POSTS_RETRIEVED: "Publicaciones del usuario obtenidas correctamente.",
