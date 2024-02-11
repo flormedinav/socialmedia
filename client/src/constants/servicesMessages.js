@@ -31,6 +31,8 @@ export const SERVICES_MESSAGES = {
       ADD_COMMENT: "Error al añadir el comentario.",
       EDIT_COMMENT: "Error al editar el comentario.",
       DELETE_COMMENT: "Error al eliminar el comentario.",
+      EDIT_POST: "Error al editar la publicación.",
+      DELETE_POST: "Error al eliminar la publicación.",
     },
   },
 };
