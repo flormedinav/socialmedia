@@ -24,7 +24,7 @@ import { checkString, stringToZero } from "../../utils/formatedString";
 const UserWidget = ({ user, userId }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
-  console.log({ user }, "en user");
+
   const darkColor = palette.neutral.dark;
   const mediumColor = palette.neutral.medium;
   const mainColor = palette.neutral.main;
