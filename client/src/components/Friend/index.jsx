@@ -5,7 +5,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 
 import { setFriends } from "../../state/slices/userSlice";
-import { FlexBetween, AvatarUser } from "../";
+import { FlexBetween, AvatarUser, MoreAction } from "../";
 import { addRemoveFriend } from "../../services/usersServices";
 
 const Friend = ({
@@ -13,9 +13,15 @@ const Friend = ({
   name,
   subtitle,
   userPicture,
-  sizePicture = "55px",
-  sizeIcon = "medium",
-  sizeName = "h5",
+  sizePicture,
+  sizeIcon,
+  sizeName,
+  isPosts,
+  anchorEl,
+  handleMenuClose,
+  handleMenuOpen,
+  handleDelete,
+  handleEdit,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,6 +91,16 @@ const Friend = ({
             />
           )}
         </IconButton>
+      )}
+
+      {_id === friendId && isPosts && (
+        <MoreAction
+          anchorEl={anchorEl}
+          handleMenuOpen={handleMenuOpen}
+          handleMenuClose={handleMenuClose}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       )}
     </FlexBetween>
   );
