@@ -1,10 +1,9 @@
 import { Modal } from "antd";
-import { Box, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 
-import "./styles.css";
-
 import { TYPE_THEMES } from "../../constants/global";
+import { ButtonSend } from "../";
 
 const ModalDelete = ({
   open,
@@ -31,20 +30,46 @@ const ModalDelete = ({
     </Box>
   );
 
+  const footerModal = () => (
+    <Box
+      sx={{
+        display: "flex",
+        gap: "0.75rem",
+        justifyContent: "flex-end",
+      }}
+    >
+      <Button
+        variant="text"
+        onClick={handleCancel}
+        disabled={confirmLoading}
+        sx={{
+          "&:hover": {
+            borderRadius: "3rem",
+          },
+        }}
+      >
+        {textCancel}
+      </Button>
+      <ButtonSend
+        disabled={confirmLoading}
+        onClick={handleConfirm}
+        isLoading={confirmLoading}
+        textButton={textConfirm}
+      />
+    </Box>
+  );
+
   return (
     <Modal
       title={titleModal()}
       open={open}
-      onOk={handleConfirm}
-      confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      cancelText={textCancel}
-      okText={textConfirm}
       className={
         palette.mode === TYPE_THEMES.DARK
           ? "custom-modal-dark"
           : "custom-modal-light"
       }
+      footer={footerModal()}
     >
       <p>{subtitle}</p>
     </Modal>
