@@ -32,7 +32,7 @@ class PostsServices {
     };
   }
 
-  async getFeedPosts({ userId }) {
+  async getFeedPosts({ userId, page = 1, perPage = 5 }) {
     try {
       const user = await User.findById(userId);
 
@@ -42,50 +42,60 @@ class PostsServices {
 
       friendIds.push(userId);
 
+      const totalPostsCount = await Post.countDocuments({
+        user: { $in: friendIds },
+      });
+
       const posts = await Post.find({ user: { $in: friendIds } })
-        .sort({
-          createdAt: -1,
-        })
-        .populate({
-          path: "user",
-          select: QUERY_SELECT_INFO_USER,
-        })
-        .populate({
-          path: "comments.user",
-          select: QUERY_SELECT_INFO_USER,
-        });
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * perPage)
+        .limit(perPage)
+        .populate({ path: "user", select: QUERY_SELECT_INFO_USER })
+        .populate({ path: "comments.user", select: QUERY_SELECT_INFO_USER });
+
+      const totalPages = Math.ceil(totalPostsCount / perPage);
 
       return {
         message: POST_SUCCESS_MESSAGES.FEED_POSTS_RETRIEVED,
         data: posts,
+        pageInfo: {
+          totalResults: totalPostsCount,
+          totalPages: totalPages,
+          currentPage: page,
+        },
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);
     }
   }
 
-  async getUserPosts({ userId }) {
+  async getUserPosts({ userId, page = 1, perPage = 5 }) {
     try {
       const user = await User.findById(userId);
 
       if (!user) throw new Error(GLOBAL_ERROR_MESSAGES.USER_NOT_FOUND);
 
+      const totalUserPostsCount = await Post.countDocuments({ user: userId });
+
+      const skip = (page - 1) * perPage;
+
       const userPosts = await Post.find({ user: userId })
-        .sort({
-          createdAt: -1,
-        })
-        .populate({
-          path: "user",
-          select: QUERY_SELECT_INFO_USER,
-        })
-        .populate({
-          path: "comments.user",
-          select: QUERY_SELECT_INFO_USER,
-        });
+        .sort({ createdAt: -1 }) 
+        .skip(skip)
+        .limit(perPage) 
+        .populate({ path: "user", select: QUERY_SELECT_INFO_USER })
+        .populate({ path: "comments.user", select: QUERY_SELECT_INFO_USER });
+
+      const totalPages = Math.ceil(totalUserPostsCount / perPage);
 
       return {
         message: POST_SUCCESS_MESSAGES.USER_POSTS_RETRIEVED,
         data: userPosts,
+        pageInfo: {
+          currentPage: page, 
+          totalPages: totalPages, 
+          totalResults: totalUserPostsCount,
+        },
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);

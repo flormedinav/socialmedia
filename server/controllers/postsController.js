@@ -17,9 +17,10 @@ class PostsController {
 
   async getFeedPosts(req, res) {
     try {
+      const { page, perPage } = req.query;
       const { userId } = req.params;
 
-      const response = await services.getFeedPosts({ userId });
+      const response = await services.getFeedPosts({ userId, page, perPage });
 
       res.json(response);
     } catch (error) {
@@ -29,9 +30,10 @@ class PostsController {
 
   async getUserPosts(req, res) {
     try {
+      const { page, perPage } = req.query;
       const { userId } = req.params;
 
-      const response = await services.getUserPosts({ userId });
+      const response = await services.getUserPosts({ userId, page, perPage });
 
       res.json(response);
     } catch (error) {
