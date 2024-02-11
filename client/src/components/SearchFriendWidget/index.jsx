@@ -1,3 +1,4 @@
+import { string } from "prop-types";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -12,34 +13,54 @@ import { Search } from "@mui/icons-material";
 import { WidgetWrapper, Friend, FlexBetween } from "../";
 import { getAllUsers } from "../../services/usersServices";
 import { FRIENDS_CONSTANTS } from "../../constants/friendsConstants";
+import Pagination from "@mui/material/Pagination";
 
 const SearchFriendWidget = ({ userId }) => {
+  const usersPerPage = 5;
+
   const { palette } = useTheme();
   const { token } = useSelector((state) => state.auth);
+  const { _id } = useSelector((state) => state.user.user);
+
   const [allUsers, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [inputSearch, setInputSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       const response = await getAllUsers({ userId, token });
-      setAllUsers(response.data);
+
+      const withoutCurrentUser = response.data.filter(
+        (user) => user._id !== _id
+      );
+
+      setAllUsers(withoutCurrentUser);
     };
 
     fetchAllUsers();
   }, [userId, token]);
 
   useEffect(() => {
+    const startIndex = (currentPage - 1) * usersPerPage;
+    const endIndex = startIndex + usersPerPage;
+
     const filtered = allUsers.filter((user) =>
       `${user.firstName} ${user.lastName}`
         .toLowerCase()
         .includes(inputSearch.toLowerCase())
     );
-    setFilteredUsers(filtered);
-  }, [allUsers, inputSearch]);
+
+    const slicedUsers = filtered.slice(startIndex, endIndex);
+
+    setFilteredUsers(slicedUsers);
+    setTotalPages(Math.ceil(filtered.length / usersPerPage));
+  }, [allUsers, inputSearch, currentPage, usersPerPage]);
 
   const handleSearchChange = (event) => {
     setInputSearch(event.target.value);
+    setCurrentPage(1);
   };
 
   return (
@@ -79,7 +100,7 @@ const SearchFriendWidget = ({ userId }) => {
               name={`${friend.firstName} ${friend.lastName}`}
               subtitle={friend.occupation}
               userPicture={friend.picture}
-              sizePicture="45px"
+              sizePicture={45}
             />
           ))}
         </Box>
@@ -95,8 +116,30 @@ const SearchFriendWidget = ({ userId }) => {
           )}
         </>
       )}
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={(event, page) => setCurrentPage(page)}
+          variant="outlined"
+        />
+      </Box>
     </WidgetWrapper>
   );
 };
 
 export default SearchFriendWidget;
+
+SearchFriendWidget.prototype = {
+  userId: string,
+};
+
+SearchFriendWidget.defaultProps = {
+  userId: "",
+};
