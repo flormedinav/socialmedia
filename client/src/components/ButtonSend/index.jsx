@@ -40,15 +40,15 @@ const ButtonSend = ({ disabled, onClick, isLoading, textButton }) => {
 export default ButtonSend;
 
 ButtonSend.propTypes = {
+  textButton: string,
   disabled: bool,
   isLoading: bool,
   onClick: func,
-  textButton: string,
 };
 
 ButtonSend.defaultProps = {
-  disabled: false,
-  onClick: () => {},
-  isLoading: false,
   textButton: "",
+  disabled: false,
+  isLoading: false,
+  onClick: () => {},
 };

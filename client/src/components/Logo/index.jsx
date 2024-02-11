@@ -1,3 +1,4 @@
+import { bool } from "prop-types";
 import { Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 
@@ -42,3 +43,11 @@ const Logo = ({ isNavigate }) => {
 };
 
 export default Logo;
+
+Logo.prototype = {
+  isNavigate: bool,
+};
+
+Logo.defaultProps = {
+  isNavigate: false,
+};

@@ -1,3 +1,4 @@
+import { bool } from "prop-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
-import { Search, DarkMode, LightMode, Menu, Close } from "@mui/icons-material";
+import { DarkMode, LightMode, Menu, Close } from "@mui/icons-material";
 
 import { setMode } from "../../state/slices/generalSlice";
 import { setLogout } from "../../state/slices/authSlice";
@@ -181,3 +182,11 @@ const Navbar = ({ isNavigate }) => {
 };
 
 export default Navbar;
+
+Navbar.prototype = {
+  isNavigate: bool,
+};
+
+Navbar.defaultProps = {
+  isNavigate: false,
+};

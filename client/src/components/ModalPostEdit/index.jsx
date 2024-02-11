@@ -1,10 +1,5 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  InputBase,
-  useTheme,
-} from "@mui/material";
+import { bool, string, func } from "prop-types";
+import { Box, Button, IconButton, InputBase, useTheme } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Modal } from "antd";
 import { styled } from "@mui/system";
@@ -15,10 +10,11 @@ import { POSTS_CONSTANTS } from "../../constants/postsConstants";
 
 const ModalPostEdit = ({
   open,
+  confirmLoading,
+  disabledButtonConfirm,
   title,
   textCancel,
   textConfirm,
-  confirmLoading,
   description,
   fileName,
   previewImage,
@@ -29,7 +25,6 @@ const ModalPostEdit = ({
   setImage,
   setPreviewImage,
   handleClickDeleteImage,
-  disabledButtonConfirm,
 }) => {
   const { palette } = useTheme();
 
@@ -58,6 +53,7 @@ const ModalPostEdit = ({
         onClick={handleCancel}
         disabled={confirmLoading}
         sx={{
+          color: palette.neutral.main,
           "&:hover": {
             borderRadius: "3rem",
           },
@@ -70,6 +66,7 @@ const ModalPostEdit = ({
         onClick={handleConfirm}
         isLoading={confirmLoading}
         textButton={textConfirm}
+        backgroundColor={TYPE_THEMES.DARK && palette.neutral.mediumLight2}
       />
     </Box>
   );
@@ -161,3 +158,41 @@ const DeleteButton = styled(IconButton)({
     backgroundColor: "rgba(244, 67, 54, 0.08)",
   },
 });
+
+ModalPostEdit.prototype = {
+  open: bool,
+  confirmLoading: bool,
+  disabledButtonConfirm: bool,
+  title: string,
+  textCancel: string,
+  textConfirm: string,
+  description: string,
+  fileName: string,
+  previewImage: string,
+  handleCancel: func,
+  handleConfirm: func,
+  handleChangeEdit: func,
+  setFileName: func,
+  setImage: func,
+  setPreviewImage: func,
+  handleClickDeleteImage: func,
+};
+
+ModalPostEdit.defaultProps = {
+  open: false,
+  confirmLoading: false,
+  disabledButtonConfirm: false,
+  title: "",
+  textCancel: "",
+  textConfirm: "",
+  description: "",
+  fileName: "",
+  previewImage: "",
+  handleCancel: () => {},
+  handleConfirm: () => {},
+  handleChangeEdit: () => {},
+  setFileName: () => {},
+  setImage: () => {},
+  setPreviewImage: () => {},
+  handleClickDeleteImage: () => {},
+};

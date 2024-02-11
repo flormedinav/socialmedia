@@ -1,8 +1,9 @@
+import { string } from "prop-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { InputBase, useTheme } from "@mui/material";
 
-import { AvatarUser, FlexBetween, WidgetWrapper, ButtonSend } from "..";
+import { AvatarUser, FlexBetween, ButtonSend } from "..";
 import { setPost } from "../../state/slices/postsSlice";
 import { addComment } from "../../services/postsServices";
 import { POSTS_CONSTANTS } from "../../constants/postsConstants";
@@ -79,3 +80,7 @@ const AddComments = ({ postId }) => {
 };
 
 export default AddComments;
+
+AddComments.propTypes = {
+  postId: string.isRequired,
+};

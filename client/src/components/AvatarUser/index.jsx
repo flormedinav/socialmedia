@@ -1,4 +1,6 @@
+import { string, number } from "prop-types";
 import { Avatar, useTheme } from "@mui/material";
+
 import { getInitials } from "../../utils/formatedString";
 
 const AvatarUser = ({ picture, size, firstName, lastName }) => {
@@ -25,3 +27,16 @@ const AvatarUser = ({ picture, size, firstName, lastName }) => {
 };
 
 export default AvatarUser;
+
+AvatarUser.propTypes = {
+  picture: string.isRequired,
+  firstName: string,
+  lastName: string,
+  size: number,
+};
+
+AvatarUser.defaultProps = {
+  firstName: "",
+  lastName: "",
+  size: 0,
+};

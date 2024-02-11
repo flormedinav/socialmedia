@@ -1,4 +1,4 @@
-import { func, string, bool } from "prop-types";
+import { func, string, bool, number, shape } from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
@@ -113,9 +113,15 @@ Friend.propTypes = {
   name: string,
   subtitle: string,
   userPicture: string,
-  sizePicture: string,
+  sizePicture: number,
   sizeIcon: string,
   sizeName: string,
+  isPosts: bool,
+  handleMenuClose: func,
+  handleMenuOpen: func,
+  handleDelete: func,
+  handleEdit: func,
+  anchorEl: shape({}),
 };
 
 Friend.defaultProps = {
@@ -123,7 +129,13 @@ Friend.defaultProps = {
   name: "",
   subtitle: "",
   userPicture: "",
-  sizePicture: "55px",
+  sizePicture: 60,
   sizeIcon: "medium",
   sizeName: "h5",
+  isPosts: false,
+  handleMenuClose: () => {},
+  handleMenuOpen: () => {},
+  handleDelete: () => {},
+  handleEdit: () => {},
+  anchorEl: null,
 };

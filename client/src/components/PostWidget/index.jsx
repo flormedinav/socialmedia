@@ -1,3 +1,4 @@
+import { string, arrayOf, objectOf, bool } from "prop-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +8,7 @@ import {
   ShareOutlined,
 } from "@mui/icons-material";
 import { IconButton, Typography, useTheme } from "@mui/material";
+import { styled } from "@mui/system";
 
 import {
   FlexBetween,
@@ -21,6 +23,7 @@ import { deletePost, editPost, likePost } from "../../services/postsServices";
 import { setTotalLikes, setTotalPosts } from "../../state/slices/userSlice";
 import { POSTS_CONSTANTS } from "../../constants/postsConstants";
 import { createUrlCloudinary } from "../../services/cloudinaryServices";
+import { CommentPropTypes } from "../../propTypes/CommentPropTypes";
 
 const PostWidget = ({
   postId,
@@ -146,7 +149,7 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper>
       <Friend
         friendId={postUserId}
         name={name}
@@ -164,15 +167,7 @@ const PostWidget = ({
         {description}
       </Typography>
 
-      {picture && (
-        <img
-          width="100%"
-          height="auto"
-          alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={picture}
-        />
-      )}
+      {picture && <ImgStyled alt="post" src={picture} loading="lazy" />}
 
       <FlexBetween mt="0.25rem">
         <FlexBetween gap="1rem">
@@ -242,3 +237,34 @@ const PostWidget = ({
 };
 
 export default PostWidget;
+
+const ImgStyled = styled("img")({
+  width: "100%",
+  height: "auto",
+  borderRadius: "0.75rem",
+  marginTop: "0.75rem",
+});
+
+PostWidget.propTypes = {
+  postId: string,
+  postUserId: string,
+  name: string,
+  description: string,
+  picture: string,
+  userPicture: string,
+  locationUser: string,
+  likes: objectOf(bool),
+  comments: arrayOf(CommentPropTypes),
+};
+
+PostWidget.defaultProps = {
+  postId: "",
+  postUserId: "",
+  name: "",
+  description: "",
+  picture: "",
+  userPicture: "",
+  locationUser: "",
+  likes: null,
+  comments: null,
+};

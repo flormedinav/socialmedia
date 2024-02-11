@@ -1,6 +1,4 @@
 import { string } from "prop-types";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ManageAccountsOutlined,
@@ -20,6 +18,7 @@ import { FlexBetween, WidgetWrapper, AvatarUser } from "../";
 import { getUser } from "../../services/usersServices";
 import { USER_CONSTANTS } from "../../constants/userConstans";
 import { checkString, stringToZero } from "../../utils/formatedString";
+import { UserPropTypes } from "../../propTypes/UserPropTypes";
 
 const UserWidget = ({ user, userId }) => {
   const { palette } = useTheme();
@@ -81,7 +80,7 @@ const UserWidget = ({ user, userId }) => {
               {firstName} {lastName}
             </Typography>
             <Typography color={mediumColor}>
-              {friends?.length} friends
+              {friends?.length} amigos
             </Typography>
           </Box>
         </FlexBetween>
@@ -172,8 +171,10 @@ export default UserWidget;
 
 UserWidget.propTypes = {
   userId: string,
+  user: UserPropTypes,
 };
 
 UserWidget.defaultProps = {
   userId: "",
+  user: null,
 };

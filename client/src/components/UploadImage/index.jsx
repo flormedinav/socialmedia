@@ -8,9 +8,9 @@ const UploadImage = ({
   setFileName,
   setPreviewImage,
   fileName,
+  text,
   errors,
   touched,
-  text,
 }) => {
   const { palette } = useTheme();
 

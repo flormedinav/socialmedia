@@ -1,3 +1,4 @@
+import { bool, string, func } from "prop-types";
 import { Modal } from "antd";
 import { Box, Button, useTheme } from "@mui/material";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
@@ -7,13 +8,13 @@ import { ButtonSend } from "../";
 
 const ModalDelete = ({
   open,
+  confirmLoading,
   handleCancel,
   handleConfirm,
   title,
   subtitle,
   textCancel,
   textConfirm,
-  confirmLoading,
 }) => {
   const { palette } = useTheme();
 
@@ -43,6 +44,7 @@ const ModalDelete = ({
         onClick={handleCancel}
         disabled={confirmLoading}
         sx={{
+          color: palette.neutral.main,
           "&:hover": {
             borderRadius: "3rem",
           },
@@ -77,3 +79,25 @@ const ModalDelete = ({
 };
 
 export default ModalDelete;
+
+ModalDelete.prototype = {
+  open: bool,
+  confirmLoading: bool,
+  handleCancel: func,
+  handleConfirm: func,
+  title: string,
+  subtitle: string,
+  textCancel: string,
+  textConfirm: string,
+};
+
+ModalDelete.defaultProps = {
+  open: false,
+  confirmLoading: false,
+  handleCancel: () => {},
+  handleConfirm: () => {},
+  title: "",
+  subtitle: "",
+  textCancel: "",
+  textConfirm: "",
+};

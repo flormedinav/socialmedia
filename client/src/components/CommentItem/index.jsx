@@ -1,3 +1,4 @@
+import { string, shape, bool } from "prop-types";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +19,7 @@ import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import { deleteComment, editComment } from "../../services/postsServices";
 import { setPost } from "../../state/slices/postsSlice";
 import { POSTS_CONSTANTS } from "../../constants/postsConstants";
+import { CommentPropTypes } from "../../propTypes/CommentPropTypes";
 
 const CommentItem = ({ postId, comment }) => {
   const navigate = useNavigate();
@@ -113,7 +115,7 @@ const CommentItem = ({ postId, comment }) => {
         }}
       />
       <Box display="flex" gap="1rem">
-        <AvatarUser picture={comment.user.picture} size="30px" />
+        <AvatarUser picture={comment.user.picture} size={30} />
         <Box
           display="flex"
           flexDirection="column"
@@ -254,3 +256,8 @@ const CommentItem = ({ postId, comment }) => {
 };
 
 export default CommentItem;
+
+CommentItem.propTypes = {
+  postId: string.isRequired,
+  comment: CommentPropTypes,
+};
