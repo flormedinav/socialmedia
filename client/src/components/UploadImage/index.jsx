@@ -5,8 +5,9 @@ import { EditOutlined } from "@mui/icons-material";
 
 const UploadImage = ({
   setFieldValue,
-  fileName,
   setFileName,
+  setPreviewImage,
+  fileName,
   errors,
   touched,
   text,
@@ -15,6 +16,11 @@ const UploadImage = ({
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
+
+    if (setPreviewImage) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl);
+    }
 
     const formData = new FormData();
     formData.append("file", file);
