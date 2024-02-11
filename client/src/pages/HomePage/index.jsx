@@ -39,7 +39,7 @@ const HomePage = () => {
       setLoading(false);
     }
   };
-  console.log({ user }, "en home");
+
   useEffect(() => {
     fetchData();
   }, []);
