@@ -1,54 +1,41 @@
 import { Box, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import {
   Navbar,
   FriendListWidget,
   PostsWidget,
-  PostCreator,
   UserWidget,
+  InfiniteScrollBase,
 } from "../../components";
-import { getUser, getUserFriends } from "../../services/usersServices";
+
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
-import { setPosts } from "../../state/slices/postsSlice";
-import { getUserPosts } from "../../services/postsServices";
+
+import useGetUserPosts from "../../hooks/usePosts/useGetUserPosts";
+import useGetUser from "../../hooks/useUser/useGetUser";
 
 const ProfilePage = () => {
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
-  const { posts } = useSelector((state) => state.posts);
   const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
   const { userId } = useParams();
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const [postsData, userData] = await Promise.all([
-        getUserPosts({ userId, token }),
-        getUser({ userId, token }),
-      ]);
+  const { userPostsData, hasNextPage, fetchNextPage, isLoading } =
+    useGetUserPosts({ userId, token });
 
-      dispatch(setPosts(postsData.data));
-      setUser(userData.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const userData = useGetUser({
+    userId,
+    token,
+  });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  if (!user) return null;
+  if (!userData) return null;
 
   return (
-    <Box>
+    <InfiniteScrollBase
+      dataLength={userPostsData.length}
+      hasNextPage={hasNextPage}
+      fetchNextPage={fetchNextPage}
+    >
       <Navbar isNavigate />
       <Box
         width="100%"
@@ -58,20 +45,19 @@ const ProfilePage = () => {
         justifyContent="center"
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
-          <UserWidget user={user} userId={userId} />
+          <UserWidget user={userData} userId={userId} />
           <Box m="2rem 0" />
-          <FriendListWidget friends={user.friends} userId={userId} />
+          <FriendListWidget friends={userData.friends} userId={userId} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <PostCreator picturePath={user.picture} />
-          <Box m="2rem 0" />
-          <PostsWidget posts={posts} loading={loading} isProfile />
+          {/* <PostCreator picturePath={userData.picture} /> */}
+          <PostsWidget posts={userPostsData} loading={isLoading} isProfile />
         </Box>
       </Box>
-    </Box>
+    </InfiniteScrollBase>
   );
 };
 
