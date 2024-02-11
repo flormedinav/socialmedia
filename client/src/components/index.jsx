@@ -10,6 +10,8 @@ import FormButton from "./Form/FormButton";
 import Friend from "./Friend";
 import FriendListWidget from "./FriendListWidget";
 import ModalDelete from "./ModalDelete";
+import ModalPostEdit from "./ModalPostEdit";
+import MoreAction from "./MoreAction";
 import Navbar from "./Navbar";
 import Logo from "./Logo";
 import PostCreator from "./PostCreator";
@@ -33,6 +35,8 @@ export {
   Friend,
   FriendListWidget,
   ModalDelete,
+  ModalPostEdit,
+  MoreAction,
   Navbar,
   Logo,
   PostCreator,
