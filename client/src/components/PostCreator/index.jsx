@@ -79,7 +79,7 @@ const PostCreator = () => {
     setFileName("");
     setPost("");
   };
-
+  
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
@@ -104,10 +104,10 @@ const PostCreator = () => {
 
       {isImageSelected && (
         <UploadImage
-          setFieldValue={setImage}
           fileName={fileName}
-          setFileName={setFileName}
           text={POSTS_CONSTANTS.POST_CREATOR.UPLOAD_PHOTO}
+          setFieldValue={setImage}
+          setFileName={setFileName}
         />
       )}
 
