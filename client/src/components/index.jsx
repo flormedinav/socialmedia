@@ -9,6 +9,7 @@ import FormBase from "./Form/FormBase";
 import FormButton from "./Form/FormButton";
 import Friend from "./Friend";
 import FriendListWidget from "./FriendListWidget";
+import InfiniteScrollBase from "./InfiniteScrollBase";
 import ModalDelete from "./ModalDelete";
 import ModalPostEdit from "./ModalPostEdit";
 import MoreAction from "./MoreAction";
@@ -34,6 +35,7 @@ export {
   FormButton,
   Friend,
   FriendListWidget,
+  InfiniteScrollBase,
   ModalDelete,
   ModalPostEdit,
   MoreAction,
