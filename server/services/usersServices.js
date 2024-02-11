@@ -1,6 +1,7 @@
 import {
   NOT_SELECT_PASSWORD,
   QUERY_SELECT_INFO_USER,
+  QUERY_SELECT_INFO_USER_WITHPOUT_POSTS,
 } from "../constants/globals.js";
 import {
   STATUS_FRIEND_REQUEST,
@@ -21,7 +22,10 @@ class UsersServices {
     try {
       const user = await User.findById(id)
         .select(NOT_SELECT_PASSWORD)
-        .populate("friends");
+        .populate({
+          path: "friends",
+          select: QUERY_SELECT_INFO_USER_WITHPOUT_POSTS,
+        });
 
       if (!user) throw new Error(USER_ERROR_MESSAGES.USER_NOT_FOUND);
 
