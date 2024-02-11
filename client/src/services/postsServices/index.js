@@ -27,6 +27,52 @@ export const createPost = async ({ userId, token, sendBody }) => {
   }
 };
 
+export const editPost = async ({ userId, postId, token, sendBody }) => {
+  try {
+    const response = await instance.patch(
+      `/posts/${userId}/${postId}`,
+      sendBody,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    callToast(TYPE_TOAST.SUCCESS, response.data.message);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in editPost: ", error);
+
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.POSTS.ERROR.EDIT_POST
+    );
+  }
+};
+
+export const deletePost = async ({ userId, postId, token }) => {
+  try {
+    const response = await instance.delete(`/posts/${userId}/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    callToast(TYPE_TOAST.SUCCESS, response.data.message);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error in deletePost: ", error);
+
+    callToast(
+      TYPE_TOAST.ERROR,
+      error.response.data.error || SERVICES_MESSAGES.POSTS.ERROR.DELETE_POST
+    );
+  }
+};
+
 export const getFeedPosts = async ({ userId, token }) => {
   try {
     const response = await instance.get(`/posts/${userId}/feed-posts`, {
