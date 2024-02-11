@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Box, Button, Typography } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "@mui/system";
 
-import { Logo, Navbar, WidgetWrapper } from "../../components";
+import { Navbar, WidgetWrapper } from "../../components";
 import { NOT_FOUND_CONSTANTS } from "../../constants/notFoundConstants";
 
 const NotFoundPage = () => {
@@ -59,7 +59,11 @@ const NotFoundPage = () => {
           <Button variant="outlined" component={Link} to="/home">
             {NOT_FOUND_CONSTANTS.TEXT_BUTTON}
           </Button>
-          <ImgStyled src="assets/logo.png" alt="Logo de la aplicación" />
+          <ImgStyled
+            loading="lazy"
+            src="assets/logo.png"
+            alt="Logo de la aplicación"
+          />
         </WidgetWrapper>
       </Box>
     </Box>
@@ -68,6 +72,6 @@ const NotFoundPage = () => {
 
 export default NotFoundPage;
 
-const ImgStyled = styled.img`
-  width: 50px;
-`;
+const ImgStyled = styled("img")({
+  width: "50px",
+});
