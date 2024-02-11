@@ -5,18 +5,15 @@ import {
   Box,
   Divider,
   IconButton,
-  Menu,
-  MenuItem,
   TextField,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
 
-import { AvatarUser, ModalDelete } from "../";
+import { AvatarUser, ModalDelete, MoreAction } from "../";
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 import { deleteComment, editComment } from "../../services/postsServices";
 import { setPost } from "../../state/slices/postsSlice";
@@ -31,7 +28,7 @@ const CommentItem = ({ postId, comment }) => {
   const { palette } = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [newComment, setNewComment] = useState(comment.text);
+  const [updatedComment, setUpdatedComment] = useState(comment.text);
   const [isEdit, setIsEdit] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -52,7 +49,7 @@ const CommentItem = ({ postId, comment }) => {
   };
 
   const handleChangeEdit = (e) => {
-    setNewComment(e.target.value);
+    setUpdatedComment(e.target.value);
   };
 
   const handleClickCancelEdit = () => {
@@ -62,7 +59,7 @@ const CommentItem = ({ postId, comment }) => {
   const fetchEditComment = async () => {
     setIsFetching(true);
     const sendBody = {
-      text: newComment,
+      text: updatedComment,
     };
 
     const response = await editComment({
@@ -73,7 +70,6 @@ const CommentItem = ({ postId, comment }) => {
       sendBody,
     });
 
-    console.log(response);
     dispatch(setPost(response.data));
     setIsEdit(false);
     setIsFetching(false);
@@ -104,7 +100,6 @@ const CommentItem = ({ postId, comment }) => {
       commentId: comment._id,
     });
 
-    console.log(response, "delete");
     dispatch(setPost(response.data));
     setOpenModal(false);
     setIsFetching(false);
@@ -145,26 +140,13 @@ const CommentItem = ({ postId, comment }) => {
             >{`${comment.user.firstName} ${comment.user.lastName}`}</Typography>
 
             {user._id === comment.user._id && (
-              <>
-                <IconButton
-                  size="small"
-                  onClick={handleMenuOpen}
-                  aria-controls="comment-menu"
-                  aria-haspopup="true"
-                >
-                  <MoreHorizIcon fontSize="small" />
-                </IconButton>
-
-                <Menu
-                  id="comment-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem onClick={handleEdit}>Editar</MenuItem>
-                  <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
-                </Menu>
-              </>
+              <MoreAction
+                handleMenuOpen={handleMenuOpen}
+                handleMenuClose={handleMenuClose}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                anchorEl={anchorEl}
+              />
             )}
           </Box>
           <Box
@@ -189,7 +171,7 @@ const CommentItem = ({ postId, comment }) => {
                 <TextField
                   variant="outlined"
                   size="small"
-                  value={newComment}
+                  value={updatedComment}
                   onChange={handleChangeEdit}
                   onKeyDown={handleKeyDownEdit}
                 />
