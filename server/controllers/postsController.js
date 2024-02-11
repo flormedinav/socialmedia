@@ -56,6 +56,39 @@ class PostsController {
     }
   }
 
+  async editPost(req, res) {
+    try {
+      const { userId, postId } = req.params;
+      const { description, picture } = req.body;
+
+      const response = await services.editPost({
+        userId,
+        postId,
+        description,
+        picture,
+      });
+
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  async deletePost(req, res) {
+    try {
+      const { userId, postId } = req.params;
+
+      const response = await services.deletePost({
+        userId,
+        postId,
+      });
+
+      res.status(200).json(response);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
   async likePost(req, res) {
     try {
       const { postId, userId } = req.params;
