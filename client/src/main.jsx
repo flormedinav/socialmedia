@@ -14,14 +14,12 @@ import store from "./state";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistStore(store)}>
-          <ToastContainer />
-          <App />
-        </PersistGate>
-      </Provider>
-    </QueryClientProvider>
-  </React.StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistStore(store)}>
+        <ToastContainer />
+        <App />
+      </PersistGate>
+    </Provider>
+  </QueryClientProvider>
 );
