@@ -1,5 +1,5 @@
 import { string } from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ManageAccountsOutlined,
   EditOutlined,
@@ -23,6 +23,7 @@ import { UserPropTypes } from "../../propTypes/UserPropTypes";
 const UserWidget = ({ user, userId }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
+  const { userId: userIdParams } = useParams();
 
   const darkColor = palette.neutral.dark;
   const mediumColor = palette.neutral.medium;
@@ -72,7 +73,7 @@ const UserWidget = ({ user, userId }) => {
               sx={{
                 "&:hover": {
                   color: palette.primary.light,
-                  cursor: "pointer",
+                  cursor: userIdParams === userId ? "unset" : "pointer",
                 },
               }}
               onClick={() => navigate(`/profile/${userId}`)}
