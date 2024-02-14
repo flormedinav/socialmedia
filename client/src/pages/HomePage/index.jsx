@@ -14,11 +14,15 @@ import {
 
 import { getFeedPosts } from "../../services/postsServices";
 import { setPosts } from "../../state/slices/postsSlice";
+import { getAllUsers } from "../../services/usersServices";
+import { setLogout } from "../../state/slices/authSlice";
+import { setClearUser } from "../../state/slices/userSlice";
 
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [allUsers, setAllUsers] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -29,24 +33,46 @@ const HomePage = () => {
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
   const fetchPage = async () => {
-    setIsLoading(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      setIsLoading(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
-    const response = await getFeedPosts({
-      userId: user._id,
-      token,
-      page: currentPage,
-    });
+      const response = await getFeedPosts({
+        userId: user._id,
+        token,
+        page: currentPage,
+      });
 
-    dispatch(setPosts(response.data));
-    setTotalPages(response.pageInfo.totalPages);
+      dispatch(setPosts(response.data));
+      setTotalPages(response.pageInfo.totalPages);
 
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(setLogout());
+        dispatch(setClearUser());
+        navigate("/");
+      }
+    }
+  };
+
+  const fetchAllUsers = async () => {
+    const response = await getAllUsers({ userId: user._id, token });
+
+    const withoutCurrentUser = response.data.filter(
+      (userResponse) => userResponse._id !== user._id
+    );
+
+    setAllUsers(withoutCurrentUser);
   };
 
   useEffect(() => {
     fetchPage();
   }, [currentPage, user.friends]);
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
 
   return (
     <Box
@@ -78,7 +104,7 @@ const HomePage = () => {
         <Box flexBasis="26%">
           <FriendListWidget friends={user.friends} userId={user._id} />
           <Box m="2rem 0" />
-          <SearchFriendWidget userId={user._id} />
+          <SearchFriendWidget allUsers={allUsers} />
         </Box>
       )}
     </Box>

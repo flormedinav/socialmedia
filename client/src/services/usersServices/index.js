@@ -14,6 +14,10 @@ export const getUser = async ({ userId, token }) => {
   } catch (error) {
     console.error("Error in getUser: ", error);
 
+    if (error.response && error.response.status === 401) {
+      throw error;
+    }
+
     callToast(
       TYPE_TOAST.ERROR,
       error.response.data.error || SERVICES_MESSAGES.USER.ERROR.GET_USER
@@ -57,6 +61,10 @@ export const getUserFriends = async ({ userId, token }) => {
   } catch (error) {
     console.error("Error in getUserFriends: ", error);
 
+    if (error.response && error.response.status === 401) {
+      throw error;
+    }
+
     callToast(
       TYPE_TOAST.ERROR,
       error.response.data.error || SERVICES_MESSAGES.USER.ERROR.GET_USER_FRIEND
@@ -75,6 +83,10 @@ export const getAllUsers = async ({ userId, token }) => {
     return response.data;
   } catch (error) {
     console.error("Error in getAllUsers: ", error);
+
+    if (error.response && error.response.status === 401) {
+      throw error;
+    }
 
     callToast(
       TYPE_TOAST.ERROR,

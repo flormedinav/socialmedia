@@ -2,12 +2,7 @@ import { Box, CircularProgress, useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import {
-  Navbar,
-  FriendListWidget,
-  PostsWidget,
-  UserWidget,
-} from "../../components";
+import { FriendListWidget, PostsWidget, UserWidget } from "../../components";
 
 import { MEDIA_QUERY_MIN_WIDTH } from "../../constants/global";
 
@@ -32,23 +27,31 @@ const ProfilePage = () => {
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
 
   const fetchPage = async () => {
-    setIsLoading(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    try {
+      setIsLoading(true);
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
-    const dataPosts = await getUserPosts({
-      userId,
-      token,
-      page: currentPage,
-    });
+      const dataPosts = await getUserPosts({
+        userId,
+        token,
+        page: currentPage,
+      });
 
-    const dataUser = await getUser({ userId, token });
+      const dataUser = await getUser({ userId, token });
 
-    dispatch(setPosts(dataPosts.data));
+      dispatch(setPosts(dataPosts.data));
 
-    setUserProfile(dataUser.data);
-    setTotalPages(dataPosts.pageInfo.totalPages);
+      setUserProfile(dataUser.data);
+      setTotalPages(dataPosts.pageInfo.totalPages);
 
-    setIsLoading(false);
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        dispatch(setLogout());
+        dispatch(setClearUser());
+        navigate("/");
+      }
+    }
   };
 
   useEffect(() => {

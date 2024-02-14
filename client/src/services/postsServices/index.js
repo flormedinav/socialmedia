@@ -88,9 +88,14 @@ export const getFeedPosts = async ({ userId, token, page }) => {
   } catch (error) {
     console.error("Error in getFeedPosts: ", error);
 
+    if (error.response && error.response.status === 401) {
+      throw error;
+    }
+
     callToast(
       TYPE_TOAST.ERROR,
-      error.response.data.error || SERVICES_MESSAGES.POSTS.ERROR.GET_FEED_POSTS
+      error.response.data.message ||
+        SERVICES_MESSAGES.POSTS.ERROR.GET_FEED_POSTS
     );
   }
 };
@@ -109,6 +114,10 @@ export const getUserPosts = async ({ userId, token, page }) => {
     return response.data;
   } catch (error) {
     console.error("Error in getUserPosts: ", error);
+
+    if (error.response && error.response.status === 401) {
+      throw error;
+    }
 
     callToast(
       TYPE_TOAST.ERROR,
