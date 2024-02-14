@@ -15,32 +15,17 @@ import { getAllUsers } from "../../services/usersServices";
 import { FRIENDS_CONSTANTS } from "../../constants/friendsConstants";
 import Pagination from "@mui/material/Pagination";
 
-const SearchFriendWidget = ({ userId }) => {
+const SearchFriendWidget = ({ allUsers }) => {
   const usersPerPage = 5;
 
   const { palette } = useTheme();
   const { token } = useSelector((state) => state.auth);
   const { _id } = useSelector((state) => state.user.user);
 
-  const [allUsers, setAllUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [inputSearch, setInputSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      const response = await getAllUsers({ userId, token });
-
-      const withoutCurrentUser = response.data.filter(
-        (user) => user._id !== _id
-      );
-
-      setAllUsers(withoutCurrentUser);
-    };
-
-    fetchAllUsers();
-  }, [userId, token]);
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * usersPerPage;
