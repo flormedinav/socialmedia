@@ -3,7 +3,7 @@ import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Logo from "../../Logo";
 import { MEDIA_QUERY_MIN_WIDTH, TYPE_THEMES } from "../../../constants/global";
 
-const FormBase = ({ backgroundImage, description, children }) => {
+const FormBase = ({ backgroundImage, description, children, isRegister }) => {
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
   const { palette } = useTheme();
 
@@ -12,7 +12,7 @@ const FormBase = ({ backgroundImage, description, children }) => {
       sx={{
         display: "flex",
         flexDirection: isNonMobileScreens ? "row" : "column",
-        maxHeight: isNonMobileScreens ? "100vh" : "auto",
+        height: isNonMobileScreens ? "100vh" : isRegister ? "auto" : "100%",
         overflow: "hidden",
         backgroundColor: TYPE_THEMES.DARK ? palette.background.alt : "inherit",
       }}
@@ -34,14 +34,14 @@ const FormBase = ({ backgroundImage, description, children }) => {
       </Box>
 
       <Box
-        width={isNonMobileScreens ? "50%" : "93%"}
         sx={{
           overflow: "hidden",
           backgroundImage: backgroundImage,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          height: isNonMobileScreens ? "100vh" : "300px",
+          height: isNonMobileScreens ? "100vh" : "100%",
+          minHeight: "300px",
           width: isNonMobileScreens ? "50%" : "100%",
         }}
       />
