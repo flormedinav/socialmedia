@@ -5,24 +5,15 @@ import { Box, Pagination, Typography, useTheme } from "@mui/material";
 import { WidgetWrapper, Friend, FlexBetween } from "../";
 import { FRIENDS_CONSTANTS } from "../../constants/friendsConstants";
 import { FriendsPropTypes } from "../../propTypes/UserPropTypes";
+import usePagination from "../../hooks/usePagination";
 
 const FriendListWidget = ({ friends }) => {
   const usersPerPage = 3;
 
   const { palette } = useTheme();
-  const [filteredFriends, setFilteredFriends] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * usersPerPage;
-    const endIndex = startIndex + usersPerPage;
-
-    const slicedUsers = friends.slice(startIndex, endIndex);
-
-    setFilteredFriends(slicedUsers);
-    setTotalPages(Math.ceil(friends.length / usersPerPage));
-  }, [friends, currentPage, usersPerPage]);
+  const { currentPage, paginatedData, totalPages, setCurrentPage } =
+    usePagination(friends, usersPerPage);
 
   return (
     <WidgetWrapper>
@@ -37,7 +28,7 @@ const FriendListWidget = ({ friends }) => {
 
       {friends && friends?.length !== 0 ? (
         <Box display="flex" flexDirection="column" gap="1.5rem" mb="1.5rem">
-          {filteredFriends?.map((friend) => (
+          {paginatedData?.map((friend) => (
             <Friend
               key={friend?._id}
               friendId={friend?._id}
