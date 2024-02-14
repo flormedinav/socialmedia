@@ -49,7 +49,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
-        {location.pathname !== "/" && location.pathname !== "register" && (
+        {location.pathname !== "/" && location.pathname !== "/register" && (
           <Footer />
         )}
       </>
