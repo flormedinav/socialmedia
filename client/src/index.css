@@ -98,3 +98,13 @@ body,
   color: #c2c2c2;
   background-color: transparent;
 }
+
+body::-webkit-scrollbar {
+  width: 7px;
+  background-color: #1a1a1a;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #00d5fa;
+  border-radius: 5px;
+}
