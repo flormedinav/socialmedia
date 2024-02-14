@@ -15,8 +15,8 @@ import { setLogin } from "../../state/slices/authSlice";
 import { setUser } from "../../state/slices/userSlice";
 
 const initialValuesLogin = {
-  email: "",
-  password: "",
+  email: "jessica@test.com",
+  password: "123456",
 };
 
 const IMAGE_WELCOME = 'url("assets/login/login-op12.jpg")';
