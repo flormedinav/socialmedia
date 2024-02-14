@@ -1,7 +1,7 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 
 import Logo from "../../Logo";
-import { MEDIA_QUERY_MIN_WIDTH } from "../../../constants/global";
+import { MEDIA_QUERY_MIN_WIDTH, TYPE_THEMES } from "../../../constants/global";
 
 const FormBase = ({ backgroundImage, description, children }) => {
   const isNonMobileScreens = useMediaQuery(MEDIA_QUERY_MIN_WIDTH[1000]);
@@ -14,6 +14,7 @@ const FormBase = ({ backgroundImage, description, children }) => {
         flexDirection: isNonMobileScreens ? "row" : "column",
         maxHeight: isNonMobileScreens ? "100vh" : "auto",
         overflow: "hidden",
+        backgroundColor: TYPE_THEMES.DARK ? palette.background.alt : "inherit",
       }}
     >
       <Box
