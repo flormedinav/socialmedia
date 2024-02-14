@@ -1,6 +1,6 @@
 import { func, string, bool, number, shape } from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 
@@ -25,6 +25,8 @@ const Friend = ({
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userId: userIdParams } = useParams();
+
   const { user } = useSelector((state) => state.user);
   const { token } = useSelector((state) => state.auth);
   const { palette } = useTheme();
@@ -49,12 +51,7 @@ const Friend = ({
     <FlexBetween>
       <FlexBetween gap="1rem">
         <AvatarUser picture={userPicture} size={sizePicture} />
-        <Box
-          onClick={() => {
-            navigate(`/profile/${friendId}`);
-            navigate(0);
-          }}
-        >
+        <Box onClick={() => navigate(`/profile/${friendId}`)}>
           <Typography
             color={main}
             variant={sizeName}
@@ -62,7 +59,7 @@ const Friend = ({
             sx={{
               "&:hover": {
                 color: primaryLight,
-                cursor: "pointer",
+                cursor: userIdParams === friendId ? "unset" : "pointer",
               },
             }}
           >
