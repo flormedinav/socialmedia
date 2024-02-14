@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import App from "./App.jsx";
 import "./index.css";
 import store from "./state";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
         <ToastContainer />
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </PersistGate>
     </Provider>
   </QueryClientProvider>
