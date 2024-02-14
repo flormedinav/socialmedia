@@ -62,6 +62,7 @@ const RegisterPage = () => {
     <FormBase
       backgroundImage={IMAGE_WELCOME}
       description={FORM_CONSTANTS.DESCRIPTION_WELCOME.REGISTER}
+      isRegister
     >
       <Formik
         onSubmit={handleFormSubmit}

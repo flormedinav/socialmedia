@@ -146,7 +146,7 @@ const UserWidget = ({ user, userId }) => {
               </Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: mainColor }} />
+          {/* <EditOutlined sx={{ color: mainColor }} /> */}
         </FlexBetween>
 
         <FlexBetween gap="1rem">
@@ -161,7 +161,7 @@ const UserWidget = ({ user, userId }) => {
               </Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: mainColor }} />
+          {/* <EditOutlined sx={{ color: mainColor }} /> */}
         </FlexBetween>
       </Box>
     </WidgetWrapper>

@@ -102,7 +102,7 @@ PostsWidget.propTypes = {
   posts: arrayOf(PostPropType),
   loading: bool,
   totalPages: number,
-  currentPage: string,
+  currentPage: number,
   setCurrentPage: func,
 };
 
@@ -110,6 +110,6 @@ PostsWidget.defaultProps = {
   posts: null,
   loading: false,
   totalPages: 0,
-  currentPage: "1",
+  currentPage: 1,
   setCurrentPage: () => {},
 };
