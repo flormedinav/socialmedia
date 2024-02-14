@@ -5,11 +5,11 @@ import ButtonSend from "./ButtonSend";
 import Comments from "./Comments";
 import CommentItem from "./CommentItem";
 import FlexBetween from "./FlexBetween";
+import Footer from "./Footer";
 import FormBase from "./Form/FormBase";
 import FormButton from "./Form/FormButton";
 import Friend from "./Friend";
 import FriendListWidget from "./FriendListWidget";
-import InfiniteScrollBase from "./InfiniteScrollBase";
 import ModalDelete from "./ModalDelete";
 import ModalPostEdit from "./ModalPostEdit";
 import MoreAction from "./MoreAction";
@@ -31,11 +31,11 @@ export {
   Comments,
   CommentItem,
   FlexBetween,
+  Footer,
   FormBase,
   FormButton,
   Friend,
   FriendListWidget,
-  InfiniteScrollBase,
   ModalDelete,
   ModalPostEdit,
   MoreAction,
