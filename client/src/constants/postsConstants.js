@@ -34,5 +34,6 @@ export const POSTS_CONSTANTS = {
       UPLOAD_PHOTO: "Subir una nueva imagen",
       ADD_PHOTO: "Subir una imagen",
     },
+    NOT_POSTS: "No hay publicaciones para mostrar",
   },
 };
