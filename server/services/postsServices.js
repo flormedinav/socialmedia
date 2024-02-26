@@ -142,15 +142,11 @@ class PostsServices {
         throw new Error(GLOBAL_ERROR_MESSAGES.POST_NOT_FOUND);
       }
 
-      // post.description = description;
-      // post.picture = picture;
-      // await post.save();
+      post.description = description;
+      post.picture = picture;
+      await post.save();
 
-      const updatedPost = await Post.findByIdAndUpdate(
-        postId,
-        { description: post.description, picture: post.picture },
-        { new: true }
-      )
+      const updatedPost = await Post.findById(postId)
         .populate({
           path: "user",
           select: QUERY_SELECT_INFO_USER,
