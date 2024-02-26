@@ -80,9 +80,9 @@ class PostsServices {
       const skip = (page - 1) * perPage;
 
       const userPosts = await Post.find({ user: userId })
-        .sort({ createdAt: -1 }) 
+        .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(perPage) 
+        .limit(perPage)
         .populate({ path: "user", select: QUERY_SELECT_INFO_USER })
         .populate({ path: "comments.user", select: QUERY_SELECT_INFO_USER });
 
@@ -92,8 +92,8 @@ class PostsServices {
         message: POST_SUCCESS_MESSAGES.USER_POSTS_RETRIEVED,
         data: userPosts,
         pageInfo: {
-          currentPage: page, 
-          totalPages: totalPages, 
+          currentPage: page,
+          totalPages: totalPages,
           totalResults: totalUserPostsCount,
         },
       };
@@ -142,15 +142,27 @@ class PostsServices {
         throw new Error(GLOBAL_ERROR_MESSAGES.POST_NOT_FOUND);
       }
 
-      post.description = description;
-      post.picture = picture;
-      await post.save();
+      // post.description = description;
+      // post.picture = picture;
+      // await post.save();
 
-      const { data } = await this.getFeedPosts({ userId });
+      const updatedPost = await Post.findByIdAndUpdate(
+        postId,
+        { description: post.description, picture: post.picture },
+        { new: true }
+      )
+        .populate({
+          path: "user",
+          select: QUERY_SELECT_INFO_USER,
+        })
+        .populate({
+          path: "comments.user",
+          select: QUERY_SELECT_INFO_USER,
+        });
 
       return {
         message: POST_SUCCESS_MESSAGES.POST_UPDATED,
-        data,
+        data: updatedPost,
       };
     } catch (error) {
       throw new Error(`${error.message || error}`);
@@ -171,13 +183,13 @@ class PostsServices {
 
       await post.remove();
 
-      const { data } = await this.getFeedPosts({ userId });
+      // const { data } = await this.getFeedPosts({ userId });
       const totalPosts = await getMyTotalPosts(userId);
 
       return {
         message: POST_SUCCESS_MESSAGES.POST_DELETED,
         data: {
-          data,
+          data: postId,
           totalPosts,
         },
       };
