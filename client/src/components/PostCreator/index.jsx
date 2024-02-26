@@ -59,6 +59,12 @@ const PostCreator = () => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleCreatePost();
+    }
+  };
+
   const handleChangePostContent = (e) => {
     setPost(e.target.value);
   };
@@ -79,7 +85,7 @@ const PostCreator = () => {
     setFileName("");
     setPost("");
   };
-  
+
   return (
     <WidgetWrapper>
       <FlexBetween gap="1.5rem">
@@ -99,6 +105,7 @@ const PostCreator = () => {
             borderRadius: "2rem",
             padding: "1rem 2rem",
           }}
+          onKeyDown={handleKeyDown}
         />
       </FlexBetween>
 
