@@ -18,7 +18,10 @@ import {
   ModalDelete,
   ModalPostEdit,
 } from "../";
-import { setPost, setPosts } from "../../state/slices/postsSlice";
+import {
+  setDeletePost,
+  setPost,
+} from "../../state/slices/postsSlice";
 import { deletePost, editPost, likePost } from "../../services/postsServices";
 import { setTotalLikes, setTotalPosts } from "../../state/slices/userSlice";
 import { POSTS_CONSTANTS } from "../../constants/postsConstants";
@@ -111,7 +114,7 @@ const PostWidget = ({
 
     const { data } = await deletePost({ userId: postUserId, postId, token });
 
-    dispatch(setPosts(data.data));
+    dispatch(setDeletePost(data.data));
     dispatch(setTotalPosts(data.totalPosts));
 
     setOpenModalDelete(false);
@@ -142,7 +145,7 @@ const PostWidget = ({
       sendBody,
     });
 
-    dispatch(setPosts(data));
+    dispatch(setPost(data));
 
     setOpenModalEdit(false);
     setIsFetching(false);
